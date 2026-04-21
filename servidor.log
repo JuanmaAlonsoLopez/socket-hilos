@@ -30,3 +30,30 @@
 [21/04/2026 19:52:46]       usando la direccion IP virtual asignada por ZeroTier
 [21/04/2026 19:52:46] Hora inicio: 21/04/2026 19:52:46
 [21/04/2026 19:52:46] 
+[21/04/2026 20:31:01] ============================================
+[21/04/2026 20:31:01]   SERVIDOR INICIADO EN EL PUERTO 6789
+[21/04/2026 20:31:01] ============================================
+[21/04/2026 20:31:01] Esperando conexiones de clientes...
+[21/04/2026 20:31:01] Nota: Puedes conectar clientes desde otras maquinas via ZeroTier
+[21/04/2026 20:31:01]       usando la direccion IP virtual asignada por ZeroTier
+[21/04/2026 20:31:01] Hora inicio: 21/04/2026 20:31:01
+[21/04/2026 20:31:01] 
+[21/04/2026 20:31:51] [CONEXION] Nuevo cliente desde IP: 192.168.194.101
+[21/04/2026 20:31:51] [CLIENTE] Usuario (192.168.194.101) - CONECTADO
+[21/04/2026 20:31:51] [LOG Usuario] >>> NOMBRE NicoB
+[21/04/2026 20:31:59] [LOG Usuario] >>> lista
+[21/04/2026 20:32:25] [CONEXION] Nuevo cliente desde IP: 192.168.194.174
+[21/04/2026 20:32:25] [CLIENTE] Usuario1 (192.168.194.174) - CONECTADO
+[21/04/2026 20:32:25] [LOG Usuario1] >>> NOMBRE Juanma
+[21/04/2026 20:32:42] [LOG Usuario1] >>> *ALL "Holiwis"
+[21/04/2026 20:32:42] [MENSAJE] Usuario1 envio a TODOS: Holiwis
+[21/04/2026 20:32:50] [LOG Usuario] >>> lista
+[21/04/2026 20:33:01] [LOG Usuario1] >>> Hola
+[21/04/2026 20:33:33] [LOG Usuario] >>> *Usuario "hola juanma"
+[21/04/2026 20:33:51] [LOG Usuario] >>> *Usuario1 "hola juanma"
+[21/04/2026 20:33:51] [MENSAJE] Usuario -> Usuario1: hola juanma
+[21/04/2026 20:34:17] [LOG Usuario1] >>> FECHA
+[21/04/2026 20:34:29] [LOG Usuario] >>> salir
+[21/04/2026 20:34:29] [CLIENTE] Usuario - DESCONECTADO
+[21/04/2026 20:34:29] [CLIENTE] Usuario - REMOVIDO DE LA LISTA
+[21/04/2026 20:37:47] [CLIENTE] Usuario1 - REMOVIDO DE LA LISTA

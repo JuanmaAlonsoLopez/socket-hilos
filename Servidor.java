@@ -1,5 +1,6 @@
 import java.io.*;
 import java.net.*;
+import java.nio.charset.Charset;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -99,20 +100,37 @@ public class Servidor {
     private static void manejarCliente(Socket socket) {
         String ip = socket.getInetAddress().getHostAddress();
         ClienteConectado cliente = null;
-        
+        Charset charset = Charset.defaultCharset();
+
         try (
             BufferedReader entrada = new BufferedReader(
-                    new InputStreamReader(socket.getInputStream(), "UTF-8"));
+                    new InputStreamReader(socket.getInputStream(), charset));
             PrintWriter salida = new PrintWriter(
-                    new OutputStreamWriter(socket.getOutputStream(), "UTF-8"), true)
+                    new OutputStreamWriter(socket.getOutputStream(), charset), true)
         ) {
-            // Asignar nombre unico al cliente
-            String nombreCliente = asignarNombreUnico("Usuario", salida);
+            // Esperar el primer mensaje del cliente (debe ser NOMBRE usuario)
+            String primerMensaje = entrada.readLine();
+            String nombreCliente;
+
+            if (primerMensaje != null && primerMensaje.toUpperCase().startsWith("NOMBRE ")) {
+                // El cliente envio su nombre
+                String nombreSolicitado = primerMensaje.substring(7).trim();
+                nombreCliente = asignarNombreUnico(nombreSolicitado, salida);
+            } else {
+                // Fallback: asignar nombre automatico
+                nombreCliente = asignarNombreUnico("Usuario", salida);
+                // Procesar el primer mensaje si no era NOMBRE
+                if (primerMensaje != null && !primerMensaje.trim().isEmpty()) {
+                    String respuesta = procesarComando(primerMensaje.trim(), nombreCliente);
+                    salida.println(respuesta);
+                }
+            }
+
             cliente = new ClienteConectado(nombreCliente, ip, salida);
             clientesConectados.put(nombreCliente, cliente);
-            
+
             imprimirYLoguear("[CLIENTE] " + nombreCliente + " (" + ip + ") - CONECTADO");
-            
+
             // Mensaje de bienvenida
             salida.println("============================================");
             salida.println("  Bienvenido al Servidor Socket!");
@@ -123,7 +141,7 @@ public class Servidor {
             String mensajeRecibido;
             while ((mensajeRecibido = entrada.readLine()) != null && !mensajeRecibido.trim().isEmpty()) {
                 mensajeRecibido = mensajeRecibido.trim();
-                
+
                 // Log en consola del servidor
                 imprimirYLoguear("[LOG " + nombreCliente + "] >>> " + mensajeRecibido);
 
