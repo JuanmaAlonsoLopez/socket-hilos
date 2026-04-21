@@ -1,0 +1,32 @@
+[16/04/2026 17:18:04] ============================================
+[16/04/2026 17:18:04]   SERVIDOR INICIADO EN EL PUERTO 6789
+[16/04/2026 17:18:04] ============================================
+[16/04/2026 17:18:04] Esperando conexiones de clientes...
+[16/04/2026 17:18:04] Nota: Puedes conectar clientes desde otras maquinas via ZeroTier
+[16/04/2026 17:18:04]       usando la direccion IP virtual asignada por ZeroTier
+[16/04/2026 17:18:04] Hora inicio: 16/04/2026 17:18:04
+[16/04/2026 17:18:04] 
+[16/04/2026 17:18:36] [CONEXION] Nuevo cliente desde IP: 127.0.0.1
+[16/04/2026 17:18:36] [CLIENTE] Usuario (127.0.0.1) - CONECTADO
+[16/04/2026 17:20:10] [LOG Usuario] >>> *ALL "Holaa"
+[16/04/2026 17:20:10] [MENSAJE] Usuario envio a TODOS: Holaa
+[16/04/2026 17:32:36] ============================================
+[16/04/2026 17:32:36]   SERVIDOR INICIADO EN EL PUERTO 6789
+[16/04/2026 17:32:36] ============================================
+[16/04/2026 17:32:36] Esperando conexiones de clientes...
+[16/04/2026 17:32:36] Nota: Puedes conectar clientes desde otras maquinas via ZeroTier
+[16/04/2026 17:32:36]       usando la direccion IP virtual asignada por ZeroTier
+[16/04/2026 17:32:36] Hora inicio: 16/04/2026 17:32:36
+[16/04/2026 17:32:36] 
+[16/04/2026 17:38:33] [CONEXION] Nuevo cliente desde IP: 192.168.194.44
+[16/04/2026 17:38:33] [CLIENTE] Usuario (192.168.194.44) - CONECTADO
+[16/04/2026 17:39:01] [LOG Usuario] >>> *all "hola puto"
+[16/04/2026 17:39:01] [MENSAJE] Usuario envio a TODOS: hola puto
+[21/04/2026 19:52:45] ============================================
+[21/04/2026 19:52:46]   SERVIDOR INICIADO EN EL PUERTO 6789
+[21/04/2026 19:52:46] ============================================
+[21/04/2026 19:52:46] Esperando conexiones de clientes...
+[21/04/2026 19:52:46] Nota: Puedes conectar clientes desde otras maquinas via ZeroTier
+[21/04/2026 19:52:46]       usando la direccion IP virtual asignada por ZeroTier
+[21/04/2026 19:52:46] Hora inicio: 21/04/2026 19:52:46
+[21/04/2026 19:52:46] 

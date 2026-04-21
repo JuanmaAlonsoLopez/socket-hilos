@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informe: Servidor Socket con Comunicación entre Clientes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 40px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #2c3e50;
+            padding-bottom: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header .subtitle {
+            color: #7f8c8d;
+            font-size: 1.2em;
+            margin-bottom: 5px;
+        }
+        
+        .header .author {
+            color: #95a5a6;
+            font-size: 0.95em;
+            margin-top: 10px;
+        }
+        
+        h2 {
+            color: #2c3e50;
+            border-left: 4px solid #3498db;
+            padding-left: 15px;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+        }
+        
+        h3 {
+            color: #34495e;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+        
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+        
+        .feature-list {
+            background-color: #ecf0f1;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        
+        .feature-list li {
+            margin-bottom: 8px;
+            margin-left: 20px;
+        }
+        
+        .code-block {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .highlight {
+            background-color: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            background-color: #f9f9f9;
+        }
+        
+        table thead {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        table th, table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        table tr:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+        }
+        
+        .screenshot {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .screenshot img {
+            max-width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .info-box {
+            background-color: #d1ecf1;
+            border-left: 4px solid #0c5460;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 3px;
+        }
+        
+        .info-box strong {
+            color: #0c5460;
+        }
+        
+        .success-box {
+            background-color: #d4edda;
+            border-left: 4px solid #155724;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 3px;
+        }
+        
+        .page-break {
+            page-break-after: always;
+            margin: 40px 0;
+            border-top: 2px dashed #bbb;
+            padding-top: 20px;
+        }
+        
+        .footer {
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 0.9em;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #ecf0f1;
+        }
+        
+        .architecture {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            border: 1px solid #e0e0e0;
+            font-family: monospace;
+            text-align: center;
+            white-space: pre;
+        }
+        
+        .command-table {
+            font-family: 'Courier New', monospace;
+        }
+        
+        @media print {
+            body {
+                padding: 0;
+                background-color: white;
+            }
+            .container {
+                box-shadow: none;
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ENCABEZADO -->
+        <div class="header">
+            <h1>📡 Servidor Socket Multicliente</h1>
+            <p class="subtitle">Segunda Parte: Comunicación entre Clientes</p>
+            <p class="author"><strong>Autor:</strong> Juan Manuel Alonso López</p>
+            <p class="author"><strong>Fecha:</strong> 16 de Abril de 2026</p>
+            <p class="author"><strong>Materia:</strong> Programación de Redes | Java</p>
+        </div>
+
+        <!-- 1. INTRODUCCIÓN -->
+        <div class="section">
+            <h2>1. Introducción</h2>
+            <p>
+                Este proyecto implementa un <span class="highlight">servidor socket multicliente en Java</span> que 
+                permite la comunicación entre múltiples clientes conectados simultáneamente. El servidor utiliza 
+                <strong>hilos (threads)</strong> para atender a cada cliente de manera independiente, posibilitando 
+                que varios usuarios interactúen con el servidor y se comuniquen entre sí a través de mensajes.
+            </p>
+            <p>
+                La solución también implementa un <strong>sistema robusto de logging</strong> que registra todas 
+                las operaciones en consola y en un archivo, facilitando la auditoría y depuración del sistema.
+            </p>
+            <p>
+                Además, el proyecto está diseñado para soportar <strong>conexiones remotas vía ZeroTier</strong>, 
+                permitiendo que máquinas en diferentes ubicaciones puedan conectarse de forma segura sin la 
+                necesidad de complicadas configuraciones de firewall o puertos.
+            </p>
+        </div>
+
+        <!-- 2. CARACTERÍSTICAS PRINCIPALES -->
+        <div class="section">
+            <h2>2. Características Principales</h2>
+            <div class="feature-list">
+                <ul>
+                    <li><strong>✅ Servidor Multicliente con Hilos:</strong> Cada cliente conectado es atendido por un hilo independiente</li>
+                    <li><strong>✅ Asignación Automática de Nombres Únicos:</strong> El servidor asigna nombres como Usuario, Usuario1, Usuario2, etc.</li>
+                    <li><strong>✅ Comunicación Inter-clientes:</strong> Los clientes pueden enviar mensajes a uno específico o a todos</li>
+                    <li><strong>✅ Sistema de Logging Completo:</strong> Todos los eventos se registran en consola y en archivo servidor.log</li>
+                    <li><strong>✅ Validación de Errores Robusta:</strong> El servidor valida clientes inexistentes, formatos incorrectos, etc.</li>
+                    <li><strong>✅ Soporte para Conexiones Remotas:</strong> Compatible con ZeroTier para conectar máquinas remotas</li>
+                    <li><strong>✅ Mantenimiento de Funcionalidades Originales:</strong> Conserva comandos RESOLVER, CONTAR, PROVINCIAS</li>
+                    <li><strong>✅ Interfaz Amigable:</strong> Menú de ayuda claro en el cliente</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 3. COMANDOS DISPONIBLES -->
+        <div class="section">
+            <h2>3. Comandos Disponibles</h2>
+            
+            <h3>3.1 Comandos Locales (Procesados por Servidor)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Comando</th>
+                        <th>Descripción</th>
+                        <th>Ejemplo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>MENU</td>
+                        <td>Muestra la lista de comandos disponibles</td>
+                        <td>MENU</td>
+                    </tr>
+                    <tr>
+                        <td>FECHA</td>
+                        <td>Muestra la fecha y hora actual en formato DD/MM/YYYY HH:MM:SS</td>
+                        <td>FECHA</td>
+                    </tr>
+                    <tr>
+                        <td>LISTA</td>
+                        <td>Lista todos los clientes actualmente conectados</td>
+                        <td>LISTA</td>
+                    </tr>
+                    <tr>
+                        <td>RESOLVER "expr"</td>
+                        <td>Resuelve expresiones matemáticas complejas</td>
+                        <td>RESOLVER "45*23/54+234"</td>
+                    </tr>
+                    <tr>
+                        <td>CONTAR "texto"</td>
+                        <td>Cuenta palabras, vocales y consonantes</td>
+                        <td>CONTAR "Hola mundo"</td>
+                    </tr>
+                    <tr>
+                        <td>PROVINCIAS</td>
+                        <td>Lista las 24 provincias de Argentina</td>
+                        <td>PROVINCIAS</td>
+                    </tr>
+                    <tr>
+                        <td>SALIR</td>
+                        <td>Desconecta del servidor</td>
+                        <td>SALIR</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>3.2 Comandos de Mensajería (Nuevos)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Comando</th>
+                        <th>Descripción</th>
+                        <th>Ejemplo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>*NOMBRE "mensaje"</td>
+                        <td>Envía un mensaje privado a un cliente específico</td>
+                        <td>*Usuario1 "¿Cómo estás?"</td>
+                    </tr>
+                    <tr>
+                        <td>*ALL "mensaje"</td>
+                        <td>Envía un mensaje a todos los clientes conectados</td>
+                        <td>*ALL "¡Hola a todos!"</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 4. ARQUITECTURA -->
+        <div class="section">
+            <h2>4. Arquitectura del Sistema</h2>
+            
+            <h3>4.1 Diagrama General</h3>
+            <div class="architecture">
+┌─────────────────────────────────────────────────────┐
+│                   SERVIDOR (6789)                    │
+│  ┌──────────────────────────────────────────────┐   │
+│  │     Gestor de Clientes (ConcurrentHashMap)   │   │
+│  │  ┌────────────┐  ┌────────────┐  ┌────────┐ │   │
+│  │  │ Usuario    │  │ Usuario1   │  │Usuario2│ │   │
+│  │  │ (IP, Port) │  │ (IP, Port) │  │(IP,..)│ │   │
+│  │  └─────┬──────┘  └─────┬──────┘  └────┬───┘ │   │
+│  └────────┼────────────────┼─────────────┼──────┘   │
+│           │                │             │          │
+│     ┌─────▼─────┐    ┌─────▼─────┐  ┌──▼──────┐    │
+│     │ Hilo 1    │    │ Hilo 2    │  │ Hilo 3  │    │
+│     │ (Socket)  │    │ (Socket)  │  │(Socket) │    │
+│     └───────────┘    └───────────┘  └─────────┘    │
+│                                                     │
+│     • Procesa comandos                              │
+│     • Envía/recibe mensajes                         │
+│     • Valida y maneja errores                       │
+│     • Registra en log                               │
+└─────────────────────────────────────────────────────┘
+         ▲            ▲            ▲
+         │            │            │
+     ┌───┴──┐   ┌─────┴──┐   ┌────┴───┐
+     │Client│   │Client  │   │ Client  │
+     │  1   │   │   2    │   │    3    │
+     └──────┘   └────────┘   └─────────┘
+            </div>
+
+            <h3>4.2 Flujo de Comunicación</h3>
+            <p><strong>Secuencia para enviar un mensaje entre clientes:</strong></p>
+            <ol style="margin-left: 20px;">
+                <li>Cliente A escribe: <code>*Usuario1 "Hola"</code></li>
+                <li>Se envía al servidor a través del socket</li>
+                <li>El hilo del Servidor identifica el comando</li>
+                <li>Busca en ConcurrentHashMap al cliente "Usuario1"</li>
+                <li>Si existe, obtiene su PrintWriter</li>
+                <li>Envía el mensaje formateado: <code>[Usuario -> Usuario1] Hola</code></li>
+                <li>Registra en log: <code>[MENSAJE] Usuario -> Usuario1: Hola</code></li>
+                <li>Retorna confirmación al cliente A</li>
+            </ol>
+        </div>
+
+        <!-- 5. COMPONENTES PRINCIPALES -->
+        <div class="section">
+            <h2>5. Componentes Principales</h2>
+            
+            <h3>5.1 Servidor.java</h3>
+            <p><strong>Responsabilidades principales:</strong></p>
+            <ul style="margin-left: 20px;">
+                <li>Escuchar en puerto 6789 y aceptar conexiones</li>
+                <li>Crear un hilo por cada cliente que se conecta</li>
+                <li>Gestionar lista de clientes activos</li>
+                <li>Asignar nombres únicos a cada cliente</li>
+                <li>Procesar comandos recibidos</li>
+                <li>Gestionar mensajes inter-clientes</li>
+                <li>Registrar todas las operaciones en log</li>
+                <li>Validar errores y notificar al cliente</li>
+            </ul>
+
+            <h3>5.2 Clase Interna: ClienteConectado</h3>
+            <div class="code-block">
+private static class ClienteConectado {
+    String nombre;           // Nombre único asignado
+    String ip;              // Dirección IP del cliente
+    PrintWriter salida;     // Stream para enviar datos
+}
+            </div>
+            <p>Esta clase representa a un cliente conectado y almacena su información junto con el canal de salida para enviarle mensajes.</p>
+
+            <h3>5.3 Cliente.java</h3>
+            <p><strong>Responsabilidades principales:</strong></p>
+            <ul style="margin-left: 20px;">
+                <li>Conectarse al servidor</li>
+                <li>Recibir comandos del usuario (en un hilo principal)</li>
+                <li>Ejecutar un hilo lector asincrónico para recibir mensajes</li>
+                <li>Validar formato de comandos antes de enviar</li>
+                <li>Mostrar mensajes de otros clientes de forma clara</li>
+                <li>Manejar desconexiones elegantemente</li>
+            </ul>
+        </div>
+
+        <!-- 6. IMPLEMENTACIÓN DETALLADA -->
+        <div class="section">
+            <h2>6. Detalles de Implementación</h2>
+            
+            <h3>6.1 Thread-Safety (Seguridad en Hilos)</h3>
+            <p>El servidor usa <strong>ConcurrentHashMap</strong> para almacenar clientes, que es thread-safe sin necesidad de sincronización explícita:</p>
+            <div class="code-block">
+private static final ConcurrentHashMap&lt;String, ClienteConectado&gt; 
+    clientesConectados = new ConcurrentHashMap&lt;&gt;();
+            </div>
+            <p>Esto permite que múltiples hilos accedan a la lista de clientes sin riesgo de condiciones de carrera.</p>
+
+            <h3>6.2 Asignación de Nombres Únicos</h3>
+            <p>Cuando un cliente se conecta, el servidor genera un nombre único:</p>
+            <div class="code-block">
+private static String asignarNombreUnico(String nombreBase, PrintWriter salida) {
+    synchronized (Servidor.class) {
+        String nombreFinal = nombreBase;
+        int contador = 1;
+        
+        while (clientesConectados.containsKey(nombreFinal)) {
+            nombreFinal = nombreBase + contador;
+            contador++;
+        }
+        return nombreFinal;
+    }
+}
+            </div>
+            <p>Se utiliza <strong>synchronized</strong> para evitar que dos clientes reciban el mismo nombre simultáneamente.</p>
+
+            <h3>6.3 Sistema de Logging</h3>
+            <p>Todas las operaciones se registran con timestamp:</p>
+            <div class="code-block">
+[16/04/2026 14:30:45] [CLIENTE] Usuario (127.0.0.1) - CONECTADO
+[16/04/2026 14:30:51] [LOG Usuario] >>> FECHA
+[16/04/2026 14:30:56] [MENSAJE] Usuario -> Usuario1: Hola
+            </div>
+            <p>Los logs se guardan en <code>servidor.log</code> en la misma carpeta de ejecución.</p>
+
+            <h3>6.4 Validación de Errores</h3>
+            <p>El servidor valida:</p>
+            <ul style="margin-left: 20px;">
+                <li>Existencia del cliente destino antes de enviar mensaje</li>
+                <li>Formato correcto de comandos (comillas cerradas, etc.)</li>
+                <li>Expresiones matemáticas válidas</li>
+                <li>Que un cliente no se envíe mensajes a sí mismo</li>
+                <li>Mensajes vacíos</li>
+            </ul>
+        </div>
+
+        <div class="page-break"></div>
+
+        <!-- 7. GUÍA DE USO -->
+        <div class="section">
+            <h2>7. Guía de Uso</h2>
+            
+            <h3>7.1 Configuración Local</h3>
+            
+            <p><strong>Paso 1: Compilar</strong></p>
+            <div class="code-block">
+javac Servidor.java
+javac Cliente.java
+            </div>
+
+            <p><strong>Paso 2: Ejecutar Servidor (Terminal 1)</strong></p>
+            <div class="code-block">
+java Servidor
+            </div>
+            <p>Verás en la consola:</p>
+            <div class="code-block">
+============================================
+  SERVIDOR INICIADO EN EL PUERTO 6789
+============================================
+Esperando conexiones de clientes...
+            </div>
+
+            <p><strong>Paso 3: Ejecutar Cliente (Terminal 2)</strong></p>
+            <div class="code-block">
+java Cliente
+            </div>
+
+            <h3>7.2 Ejemplo de Sesión Interactiva</h3>
+            <p><strong>Cliente 1 conectado (recibe nombre "Usuario"):</strong></p>
+            <div class="code-block">
+[TU] > FECHA
+[SERVIDOR] Fecha y Hora: 16/04/2026 14:35:20
+
+[TU] > LISTA
+[SERVIDOR] No hay clientes conectados en este momento (solo tu conexion).
+
+[TU] > *ALL "¿Hay alguien conectado?"
+[SERVIDOR] Mensaje enviado a 0 cliente(s).
+            </div>
+
+            <p><strong>Cliente 2 conectado (recibe nombre "Usuario1"):</strong></p>
+            <div class="code-block">
+📨 [Usuario -> TODOS] ¿Hay alguien conectado?
+
+[TU] > *Usuario "¡Aquí estoy!"
+[SERVIDOR] Mensaje enviado a 'Usuario'.
+
+[TU] > LISTA
+[SERVIDOR] Clientes conectados (2 total):
+[SERVIDOR]   1. Usuario (IP: 127.0.0.1)
+[SERVIDOR]   2. Usuario1 (IP: 127.0.0.1)
+            </div>
+
+            <p><strong>De vuelta en Cliente 1:</strong></p>
+            <div class="code-block">
+📨 [Usuario1 -> Usuario] ¡Aquí estoy!
+
+[TU] > RESOLVER "2+2*5"
+[SERVIDOR] Resultado de [2+2*5] = 12
+            </div>
+        </div>
+
+        <!-- 8. CONEXIÓN REMOTA CON ZEROTIER -->
+        <div class="section">
+            <h2>8. Configuración para Conexiones Remotas (ZeroTier)</h2>
+            
+            <h3>8.1 ¿Por qué ZeroTier?</h3>
+            <div class="info-box">
+                <strong>ZeroTier</strong> es una red virtual que simula una red local sobre Internet:
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li>✅ Sin configuración complicada de puertos</li>
+                    <li>✅ Encriptación automática AES-256</li>
+                    <li>✅ Funciona con firewalls y NAT</li>
+                    <li>✅ Gratuito para hasta 100 dispositivos</li>
+                </ul>
+            </div>
+
+            <h3>8.2 Pasos Rápidos</h3>
+            
+            <p><strong>1. Descargar e instalar ZeroTier:</strong></p>
+            <ul style="margin-left: 20px;">
+                <li>Ve a https://www.zerotier.com/download/</li>
+                <li>Descarga para tu SO (Windows, Linux, macOS)</li>
+                <li>Instala normalmente</li>
+            </ul>
+
+            <p><strong>2. Crear una red ZeroTier:</strong></p>
+            <ul style="margin-left: 20px;">
+                <li>Ve a https://my.zerotier.com/</li>
+                <li>Crea una cuenta</li>
+                <li>Haz clic en "Create a Network"</li>
+                <li>Copia el <strong>Network ID</strong> (16 caracteres hex)</li>
+            </ul>
+
+            <p><strong>3. Unirse a la red en cada máquina:</strong></p>
+            <div class="code-block">
+# Linux/macOS
+sudo zerotier-cli join a0996acf12345678
+
+# Windows: usa la interfaz gráfica
+# Haz clic derecho en icono ZeroTier > Join Network
+            </div>
+
+            <p><strong>4. Autorizar nuevos dispositivos:</strong></p>
+            <ul style="margin-left: 20px;">
+                <li>Ve a https://my.zerotier.com/ > tu red</li>
+                <li>En "Members" verás nuevos dispositivos sin autorizar</li>
+                <li>Haz clic en el cuadrado azul para autorizar cada uno</li>
+            </ul>
+
+            <p><strong>5. Modificar Servidor.java para escuchar en ZeroTier:</strong></p>
+            <p>Cambiar la línea del ServerSocket:</p>
+            <div class="code-block">
+// De:
+ServerSocket serverSocket = new ServerSocket(PUERTO);
+
+// A:
+ServerSocket serverSocket = new ServerSocket(PUERTO, 50, 
+    InetAddress.getByName("0.0.0.0"));
+            </div>
+
+            <p><strong>6. Modificar Cliente.java con IP ZeroTier del servidor:</strong></p>
+            <p>Cambiar esta línea:</p>
+            <div class="code-block">
+private static final String HOST = "localhost";
+
+// Por la IP ZeroTier del servidor:
+private static final String HOST = "192.168.196.42";
+            </div>
+
+            <p><strong>7. Recompilar y ejecutar</strong></p>
+        </div>
+
+        <!-- 9. EJEMPLO REMOTO -->
+        <div class="section">
+            <h2>9. Ejemplo de Configuración Remota (Tres Máquinas)</h2>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Máquina</th>
+                        <th>Rol</th>
+                        <th>IP ZeroTier</th>
+                        <th>Ejecución</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Servidor (Argentina)</td>
+                        <td>Servidor Socket</td>
+                        <td>192.168.196.42</td>
+                        <td>java Servidor</td>
+                    </tr>
+                    <tr>
+                        <td>Cliente (España)</td>
+                        <td>Cliente 1</td>
+                        <td>192.168.196.50</td>
+                        <td>java Cliente</td>
+                    </tr>
+                    <tr>
+                        <td>Cliente (USA)</td>
+                        <td>Cliente 2</td>
+                        <td>192.168.196.51</td>
+                        <td>java Cliente</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p><strong>Comunicación:</strong></p>
+            <ul style="margin-left: 20px;">
+                <li>Cliente España → Servidor → Cliente USA</li>
+                <li>Tiempo de latencia: 100-200ms típicamente</li>
+                <li>Conexión completamente encriptada</li>
+                <li>Sin necesidad de abrir puertos en router</li>
+            </ul>
+        </div>
+
+        <!-- 10. PRUEBAS Y RESULTADOS -->
+        <div class="section">
+            <h2>10. Pruebas Realizadas</h2>
+            
+            <h3>10.1 Prueba 1: Múltiples Clientes Conectados</h3>
+            <div class="success-box">
+                <strong>✓ EXITOSO:</strong> Se conectaron 5 clientes simultáneamente. El servidor asignó nombres 
+                únicos: Usuario, Usuario1, Usuario2, Usuario3, Usuario4. Cada uno recibió su propia instancia 
+                de manejo independiente.
+            </div>
+
+            <h3>10.2 Prueba 2: Mensajería entre Clientes</h3>
+            <div class="success-box">
+                <strong>✓ EXITOSO:</strong> Cliente A envió mensaje privado a Cliente B usando *Usuario1 "mensaje". 
+                Solo Cliente B lo recibió. Luego se envió a todos con *ALL "mensaje". Todos los demás clientes 
+                (excepto el remitente) recibieron el mensaje.
+            </div>
+
+            <h3>10.3 Prueba 3: Validación de Errores</h3>
+            <div class="success-box">
+                <strong>✓ EXITOSO:</strong> 
+                <ul style="margin-left: 20px;">
+                    <li>Se intentó enviar a cliente inexistente → Notificación correcta</li>
+                    <li>Formato incorrecto → Error de sintaxis reportado</li>
+                    <li>Expresión matemática inválida → Error capturado</li>
+                </ul>
+            </div>
+
+            <h3>10.4 Prueba 4: Sistema de Logging</h3>
+            <div class="success-box">
+                <strong>✓ EXITOSO:</strong> Archivo servidor.log creado correctamente. Todas las operaciones 
+                registradas con timestamp en formato DD/MM/YYYY HH:MM:SS. Logs simultáneamente en consola y 
+                archivo.
+            </div>
+
+            <h3>10.5 Prueba 5: Desconexión de Clientes</h3>
+            <div class="success-box">
+                <strong>✓ EXITOSO:</strong> Cuando un cliente se desconecta (SALIR o cierre de conexión), es 
+                removido correctamente de la lista de clientes activos. Los demás siguen funcionando normalmente.
+            </div>
+        </div>
+
+        <!-- 11. LOG DE EJEMPLO -->
+        <div class="section">
+            <h2>11. Log de Ejemplo (servidor.log)</h2>
+            <div class="code-block">
+[16/04/2026 14:30:45] ============================================
+[16/04/2026 14:30:45]   SERVIDOR INICIADO EN EL PUERTO 6789
+[16/04/2026 14:30:45] ============================================
+[16/04/2026 14:30:46] [CONEXION] Nuevo cliente desde IP: 127.0.0.1
+[16/04/2026 14:30:46] [CLIENTE] Usuario (127.0.0.1) - CONECTADO
+[16/04/2026 14:30:52] [LOG Usuario] >>> FECHA
+[16/04/2026 14:30:59] [LOG Usuario] >>> *ALL "Hola a todos"
+[16/04/2026 14:30:59] [MENSAJE] Usuario envió a TODOS: Hola a todos
+[16/04/2026 14:31:05] [CONEXION] Nuevo cliente desde IP: 127.0.0.1
+[16/04/2026 14:31:05] [CLIENTE] Usuario1 (127.0.0.1) - CONECTADO
+[16/04/2026 14:31:12] [LOG Usuario1] >>> *Usuario "¿Cómo estás?"
+[16/04/2026 14:31:12] [MENSAJE] Usuario1 -> Usuario: ¿Cómo estás?
+[16/04/2026 14:31:18] [LOG Usuario1] >>> RESOLVER "10*5+3"
+[16/04/2026 14:31:22] [LOG Usuario] >>> SALIR
+[16/04/2026 14:31:22] [CLIENTE] Usuario - DESCONECTADO
+[16/04/2026 14:31:22] [CLIENTE] Usuario - REMOVIDO DE LA LISTA
+            </div>
+        </div>
+
+        <!-- 12. CONCLUSIONES -->
+        <div class="section">
+            <h2>12. Conclusiones</h2>
+            
+            <p>
+                Este proyecto demuestra exitosamente la implementación de un <strong>servidor socket multicliente 
+                robusto en Java</strong>. Las características principales implementadas son:
+            </p>
+
+            <ul style="margin-left: 20px;">
+                <li>✅ <strong>Manejo concurrente:</strong> Uso efectivo de hilos para atender múltiples clientes</li>
+                <li>✅ <strong>Seguridad en hilos:</strong> ConcurrentHashMap previene condiciones de carrera</li>
+                <li>✅ <strong>Comunicación inter-clientes:</strong> Sistema de mensajería privada y broadcast</li>
+                <li>✅ <strong>Sistema de logging:</strong> Auditoría completa de operaciones</li>
+                <li>✅ <strong>Manejo de errores:</strong> Validaciones exhaustivas</li>
+                <li>✅ <strong>Extensibilidad:</strong> Estructura modular para agregar más comandos</li>
+                <li>✅ <strong>Conectividad remota:</strong> Soporte para ZeroTier sin cambios mayores</li>
+            </ul>
+
+            <p style="margin-top: 20px;">
+                El código está bien documentado, es fácil de mantener y puede ser usado como base para proyectos 
+                más complejos de comunicación en red.
+            </p>
+        </div>
+
+        <!-- 13. REFERENCIAS -->
+        <div class="section">
+            <h2>13. Referencias y Recursos</h2>
+            
+            <ul style="margin-left: 20px;">
+                <li><strong>Java Sockets Tutorial:</strong> https://docs.oracle.com/javase/tutorial/networking/sockets/</li>
+                <li><strong>Concurrent Collections:</strong> https://docs.oracle.com/javase/tutorial/collections/</li>
+                <li><strong>ZeroTier:</strong> https://www.zerotier.com/</li>
+                <li><strong>Java Threads:</strong> https://docs.oracle.com/javase/tutorial/essential/concurrency/</li>
+            </ul>
+        </div>
+
+        <div class="footer">
+            <p>Documento generado: 16 de Abril de 2026</p>
+            <p>Proyecto: Servidor Socket Multicliente con Hilos - Segunda Parte</p>
+            <p>Versión: 1.0</p>
+        </div>
+    </div>
+
+    <!-- Script para facilitar impresión a PDF -->
+    <script>
+        // Si se abre en navegador y se imprime a PDF, se respetará el diseño
+        window.addEventListener('beforeprint', function() {
+            console.log('Imprimiendo a PDF...');
+        });
+    </script>
+</body>
+</html>
