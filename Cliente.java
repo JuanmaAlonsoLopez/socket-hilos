@@ -3,20 +3,10 @@ import java.net.*;
 import java.nio.charset.Charset;
 import java.util.Scanner;
 
-/**
- * Cliente Socket - Segunda Parte: Comunicacion entre Clientes
- * Autor: Alonso Juan Manuel
- *
- * Cliente mejorado que soporta:
- * - Comunicacion con otros clientes conectados
- * - Envio de mensajes a un cliente especifico o a todos
- * - Todos los comandos del servidor
- * - Interfaz clara y amigable
- */
 public class Cliente {
 
-    private static final String HOST   = "192.168.194.174";
-    private static final int    PUERTO = 6789;
+    private static final String HOST   = "192.168.194.119";
+    private static final int PUERTO = 6789;
     private static volatile boolean desconectado = false;
 
     public static void main(String[] args) {

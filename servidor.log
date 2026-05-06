@@ -1,59 +1,93 @@
-[16/04/2026 17:18:04] ============================================
-[16/04/2026 17:18:04]   SERVIDOR INICIADO EN EL PUERTO 6789
-[16/04/2026 17:18:04] ============================================
-[16/04/2026 17:18:04] Esperando conexiones de clientes...
-[16/04/2026 17:18:04] Nota: Puedes conectar clientes desde otras maquinas via ZeroTier
-[16/04/2026 17:18:04]       usando la direccion IP virtual asignada por ZeroTier
-[16/04/2026 17:18:04] Hora inicio: 16/04/2026 17:18:04
-[16/04/2026 17:18:04] 
-[16/04/2026 17:18:36] [CONEXION] Nuevo cliente desde IP: 127.0.0.1
-[16/04/2026 17:18:36] [CLIENTE] Usuario (127.0.0.1) - CONECTADO
-[16/04/2026 17:20:10] [LOG Usuario] >>> *ALL "Holaa"
-[16/04/2026 17:20:10] [MENSAJE] Usuario envio a TODOS: Holaa
-[16/04/2026 17:32:36] ============================================
-[16/04/2026 17:32:36]   SERVIDOR INICIADO EN EL PUERTO 6789
-[16/04/2026 17:32:36] ============================================
-[16/04/2026 17:32:36] Esperando conexiones de clientes...
-[16/04/2026 17:32:36] Nota: Puedes conectar clientes desde otras maquinas via ZeroTier
-[16/04/2026 17:32:36]       usando la direccion IP virtual asignada por ZeroTier
-[16/04/2026 17:32:36] Hora inicio: 16/04/2026 17:32:36
-[16/04/2026 17:32:36] 
-[16/04/2026 17:38:33] [CONEXION] Nuevo cliente desde IP: 192.168.194.44
-[16/04/2026 17:38:33] [CLIENTE] Usuario (192.168.194.44) - CONECTADO
-[16/04/2026 17:39:01] [LOG Usuario] >>> *all "hola puto"
-[16/04/2026 17:39:01] [MENSAJE] Usuario envio a TODOS: hola puto
-[21/04/2026 19:52:45] ============================================
-[21/04/2026 19:52:46]   SERVIDOR INICIADO EN EL PUERTO 6789
-[21/04/2026 19:52:46] ============================================
-[21/04/2026 19:52:46] Esperando conexiones de clientes...
-[21/04/2026 19:52:46] Nota: Puedes conectar clientes desde otras maquinas via ZeroTier
-[21/04/2026 19:52:46]       usando la direccion IP virtual asignada por ZeroTier
-[21/04/2026 19:52:46] Hora inicio: 21/04/2026 19:52:46
-[21/04/2026 19:52:46] 
-[21/04/2026 20:31:01] ============================================
-[21/04/2026 20:31:01]   SERVIDOR INICIADO EN EL PUERTO 6789
-[21/04/2026 20:31:01] ============================================
-[21/04/2026 20:31:01] Esperando conexiones de clientes...
-[21/04/2026 20:31:01] Nota: Puedes conectar clientes desde otras maquinas via ZeroTier
-[21/04/2026 20:31:01]       usando la direccion IP virtual asignada por ZeroTier
-[21/04/2026 20:31:01] Hora inicio: 21/04/2026 20:31:01
-[21/04/2026 20:31:01] 
-[21/04/2026 20:31:51] [CONEXION] Nuevo cliente desde IP: 192.168.194.101
-[21/04/2026 20:31:51] [CLIENTE] Usuario (192.168.194.101) - CONECTADO
-[21/04/2026 20:31:51] [LOG Usuario] >>> NOMBRE NicoB
-[21/04/2026 20:31:59] [LOG Usuario] >>> lista
-[21/04/2026 20:32:25] [CONEXION] Nuevo cliente desde IP: 192.168.194.174
-[21/04/2026 20:32:25] [CLIENTE] Usuario1 (192.168.194.174) - CONECTADO
-[21/04/2026 20:32:25] [LOG Usuario1] >>> NOMBRE Juanma
-[21/04/2026 20:32:42] [LOG Usuario1] >>> *ALL "Holiwis"
-[21/04/2026 20:32:42] [MENSAJE] Usuario1 envio a TODOS: Holiwis
-[21/04/2026 20:32:50] [LOG Usuario] >>> lista
-[21/04/2026 20:33:01] [LOG Usuario1] >>> Hola
-[21/04/2026 20:33:33] [LOG Usuario] >>> *Usuario "hola juanma"
-[21/04/2026 20:33:51] [LOG Usuario] >>> *Usuario1 "hola juanma"
-[21/04/2026 20:33:51] [MENSAJE] Usuario -> Usuario1: hola juanma
-[21/04/2026 20:34:17] [LOG Usuario1] >>> FECHA
-[21/04/2026 20:34:29] [LOG Usuario] >>> salir
-[21/04/2026 20:34:29] [CLIENTE] Usuario - DESCONECTADO
-[21/04/2026 20:34:29] [CLIENTE] Usuario - REMOVIDO DE LA LISTA
-[21/04/2026 20:37:47] [CLIENTE] Usuario1 - REMOVIDO DE LA LISTA
+[23/04/2026 13:10:25] ============================================
+[23/04/2026 13:10:25]   SERVIDOR INICIADO EN EL PUERTO 6789
+[23/04/2026 13:10:25] ============================================
+[23/04/2026 13:10:25] Esperando conexiones de clientes...
+[23/04/2026 13:10:25] Nota: Puedes conectar clientes desde otras maquinas via ZeroTier
+[23/04/2026 13:10:25]       usando la direccion IP virtual asignada por ZeroTier
+[23/04/2026 13:10:25] Hora inicio: 23/04/2026 13:10:25
+[23/04/2026 13:10:25] 
+[23/04/2026 13:10:37] [CONEXION] Nuevo cliente desde IP: 192.168.194.119
+[23/04/2026 13:10:37] [CLIENTE] Juanma (192.168.194.119) - CONECTADO
+[23/04/2026 13:12:43] [LOG Juanma] >>> FECHA
+[23/04/2026 13:12:58] [LOG Juanma] >>> RESOLVER "1+1"
+[23/04/2026 14:08:48] [LOG Juanma] >>> LISTA
+[23/04/2026 14:24:52] [CONEXION] Nuevo cliente desde IP: 192.168.194.209
+[23/04/2026 14:24:52] [CLIENTE] NicoB (192.168.194.209) - CONECTADO
+[23/04/2026 14:25:39] [LOG NicoB] >>> lista
+[23/04/2026 14:25:54] [LOG NicoB] >>> *all "Hola Juanma"
+[23/04/2026 14:25:54] [MENSAJE] NicoB envio a TODOS: Hola Juanma
+[23/04/2026 14:28:12] [LOG NicoB] >>> salir
+[23/04/2026 14:28:12] [CLIENTE] NicoB - DESCONECTADO
+[23/04/2026 14:28:12] [CLIENTE] NicoB - REMOVIDO DE LA LISTA
+[23/04/2026 16:12:01] ============================================
+[23/04/2026 16:12:01]   SERVIDOR INICIADO EN EL PUERTO 6789
+[23/04/2026 16:12:01] ============================================
+[23/04/2026 16:12:01] Esperando conexiones de clientes...
+[23/04/2026 16:12:01] Nota: Puedes conectar clientes desde otras maquinas via ZeroTier
+[23/04/2026 16:12:01]       usando la direccion IP virtual asignada por ZeroTier
+[23/04/2026 16:12:01] Hora inicio: 23/04/2026 16:12:01
+[23/04/2026 16:12:01] 
+[23/04/2026 16:20:59] ============================================
+[23/04/2026 16:20:59]   SERVIDOR INICIADO EN EL PUERTO 6789
+[23/04/2026 16:20:59] ============================================
+[23/04/2026 16:20:59] Esperando conexiones de clientes...
+[23/04/2026 16:20:59] Nota: Puedes conectar clientes desde otras maquinas via ZeroTier
+[23/04/2026 16:20:59]       usando la direccion IP virtual asignada por ZeroTier
+[23/04/2026 16:20:59] Hora inicio: 23/04/2026 16:20:59
+[23/04/2026 16:20:59] 
+[23/04/2026 16:24:13] [CONEXION] Nuevo cliente desde IP: 192.168.194.119
+[23/04/2026 16:24:13] [CLIENTE] Juanma (192.168.194.119) - CONECTADO
+[23/04/2026 16:26:26] [CONEXION] Nuevo cliente desde IP: 192.168.194.209
+[23/04/2026 16:26:26] [CLIENTE] NicoB (192.168.194.209) - CONECTADO
+[23/04/2026 16:26:29] [LOG NicoB] >>> lista
+[23/04/2026 16:26:46] [LOG NicoB] >>> *Juanma "hola, prueba"
+[23/04/2026 16:26:46] [MENSAJE] NicoB -> Juanma: hola, prueba
+[23/04/2026 16:27:30] [LOG Juanma] >>> LISTA
+[23/04/2026 16:27:49] [LOG Juanma] >>> *NicoB "De primera"
+[23/04/2026 16:27:49] [MENSAJE] Juanma -> NicoB: De primera
+[23/04/2026 18:14:19] [LOG NicoB] >>> salir
+[23/04/2026 18:14:19] [CLIENTE] NicoB - DESCONECTADO
+[23/04/2026 18:14:19] [CLIENTE] NicoB - REMOVIDO DE LA LISTA
+[30/04/2026 14:16:04] [CONEXION] Nuevo cliente desde IP: 192.168.194.209
+[30/04/2026 14:16:04] [CLIENTE] nicoB (192.168.194.209) - CONECTADO
+[30/04/2026 14:16:10] [LOG nicoB] >>> lista
+[30/04/2026 14:22:33] [CONEXION] Nuevo cliente desde IP: 192.168.194.101
+[30/04/2026 14:22:33] [CLIENTE] nicolasBastias (192.168.194.101) - CONECTADO
+[30/04/2026 14:22:39] [LOG nicolasBastias] >>> lista
+[30/04/2026 14:22:44] [LOG nicolasBastias] >>> salir
+[30/04/2026 14:22:44] [CLIENTE] nicolasBastias - DESCONECTADO
+[30/04/2026 14:22:44] [CLIENTE] nicolasBastias - REMOVIDO DE LA LISTA
+[30/04/2026 14:23:29] [LOG nicoB] >>> lista
+[30/04/2026 14:23:35] [LOG nicoB] >>> salir
+[30/04/2026 14:23:35] [CLIENTE] nicoB - DESCONECTADO
+[30/04/2026 14:23:35] [CLIENTE] nicoB - REMOVIDO DE LA LISTA
+[30/04/2026 16:51:20] [CONEXION] Nuevo cliente desde IP: 192.168.194.101
+[30/04/2026 16:51:20] [CLIENTE] NicoBasstias (192.168.194.101) - CONECTADO
+[30/04/2026 16:51:58] [LOG NicoBasstias] >>> salir
+[30/04/2026 16:51:58] [CLIENTE] NicoBasstias - DESCONECTADO
+[30/04/2026 16:51:58] [CLIENTE] NicoBasstias - REMOVIDO DE LA LISTA
+[30/04/2026 16:53:27] [CONEXION] Nuevo cliente desde IP: 192.168.194.101
+[30/04/2026 16:53:27] [CLIENTE] NicoB (192.168.194.101) - CONECTADO
+[30/04/2026 16:53:51] [CONEXION] Nuevo cliente desde IP: 192.168.194.101
+[30/04/2026 16:53:51] [CLIENTE] lll (192.168.194.101) - CONECTADO
+[30/04/2026 16:53:57] [LOG lll] >>> lista
+[30/04/2026 16:54:00] [LOG lll] >>> slair
+[30/04/2026 16:54:03] [LOG lll] >>> salir
+[30/04/2026 16:54:03] [CLIENTE] lll - DESCONECTADO
+[30/04/2026 16:54:03] [CLIENTE] lll - REMOVIDO DE LA LISTA
+[30/04/2026 16:57:01] [LOG NicoB] >>> salir
+[30/04/2026 16:57:01] [CLIENTE] NicoB - DESCONECTADO
+[30/04/2026 16:57:01] [CLIENTE] NicoB - REMOVIDO DE LA LISTA
+[30/04/2026 16:57:16] [LOG Juanma] >>> Salir
+[30/04/2026 16:57:16] [CLIENTE] Juanma - DESCONECTADO
+[30/04/2026 16:57:16] [CLIENTE] Juanma - REMOVIDO DE LA LISTA
+[30/04/2026 16:57:58] [CONEXION] Nuevo cliente desde IP: 192.168.194.119
+[30/04/2026 16:57:58] [CLIENTE] JUANMA (192.168.194.119) - CONECTADO
+[30/04/2026 16:57:59] [CONEXION] Nuevo cliente desde IP: 192.168.194.101
+[30/04/2026 16:57:59] [CLIENTE] NicoB (192.168.194.101) - CONECTADO
+[30/04/2026 16:58:49] [LOG JUANMA] >>> *NicoB "Hola nico"
+[30/04/2026 16:58:49] [MENSAJE] JUANMA -> NicoB: Hola nico
+[30/04/2026 16:59:05] [LOG JUANMA] >>> Salir
+[30/04/2026 16:59:05] [CLIENTE] JUANMA - DESCONECTADO
+[30/04/2026 16:59:05] [CLIENTE] JUANMA - REMOVIDO DE LA LISTA
+[30/04/2026 17:00:50] [CLIENTE] NicoB - REMOVIDO DE LA LISTA

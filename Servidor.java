@@ -6,27 +6,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.*;
 
-/**
- * Servidor Socket - Segunda Parte: Comunicacion entre Clientes
- * Autor: Alonso Juan Manuel
- * 
- * Servidor mejorado que:
- * - Gestiona multiples clientes simultaneamente con hilos
- * - Permite comunicacion entre clientes (*NOMBRE "mensaje" o *ALL "mensaje")
- * - Asigna nombres unicos a cada cliente
- * - Mantiene un log detallado de todas las operaciones
- * 
- * Comandos soportados:
- *   MENU                      -> Muestra el menu de ayuda
- *   FECHA                     -> Muestra la fecha y hora actual
- *   LISTA                     -> Lista los clientes conectados
- *   RESOLVER "expresion"      -> Resuelve una expresion matematica
- *   CONTAR "texto"            -> Cuenta palabras, vocales y consonantes
- *   PROVINCIAS                -> Lista las 24 provincias de Argentina
- *   *NOMBRE "mensaje"         -> Envia un mensaje a un cliente especifico
- *   *ALL "mensaje"            -> Envia un mensaje a todos los clientes
- *   SALIR                     -> Cierra la conexion con el cliente
- */
 public class Servidor {
 
     private static final int PUERTO = 6789;
