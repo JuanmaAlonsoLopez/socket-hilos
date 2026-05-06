@@ -3,6 +3,7 @@ import java.net.*;
 import java.nio.charset.Charset;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.*;
 
@@ -79,7 +80,7 @@ public class Servidor {
     private static void manejarCliente(Socket socket) {
         String ip = socket.getInetAddress().getHostAddress();
         ClienteConectado cliente = null;
-        Charset charset = Charset.defaultCharset();
+        Charset charset = StandardCharsets.UTF_8;
 
         try (
             BufferedReader entrada = new BufferedReader(
@@ -483,8 +484,9 @@ public class Servidor {
         System.out.println(linea);
         
         // Guardar en archivo
-        try (FileWriter fw = new FileWriter(ARCHIVO_LOG, true);
-             BufferedWriter bw = new BufferedWriter(fw)) {
+        try (FileOutputStream fos = new FileOutputStream(ARCHIVO_LOG, true);
+             OutputStreamWriter osw = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
+             BufferedWriter bw = new BufferedWriter(osw)) {
             bw.write(linea);
             bw.newLine();
         } catch (IOException e) {

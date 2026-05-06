@@ -1,8 +1,10 @@
 import javax.swing.*;
+import javax.swing.text.*;
 import java.awt.*;
 import java.io.*;
 import java.net.*;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -145,7 +147,7 @@ public class ClienteGUI extends JFrame {
 
   private void conectar() {
     try {
-      Charset charset = Charset.defaultCharset();
+      Charset charset = StandardCharsets.UTF_8;
       socket = new Socket(HOST, PUERTO);
       salida = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), charset), true);
       entrada = new BufferedReader(new InputStreamReader(socket.getInputStream(), charset));
@@ -211,39 +213,76 @@ public class ClienteGUI extends JFrame {
     return chatsAbiertos.computeIfAbsent(id, k -> new VentanaChat(id));
   }
 
+  // --- INTERFAZ DE CHAT MEJORADA TIPO WHATSAPP ---
   private class VentanaChat extends JFrame {
-    private JTextArea area;
+    private JTextPane area; // Se reemplaza JTextArea por JTextPane
     private JTextField input;
     private String destino;
 
     public VentanaChat(String destino) {
       this.destino = destino;
       setTitle(destino.equals("TODOS") ? "Chat Global" : "Chat con " + destino);
-      setSize(400, 300);
+      setSize(400, 450); // Ligeramente más grande para mayor comodidad
       setLayout(new BorderLayout());
 
-      area = new JTextArea();
+      area = new JTextPane();
       area.setEditable(false);
-      area.setFont(new Font("SansSerif", Font.PLAIN, 12));
+      area.setBackground(new Color(230, 230, 230)); // Fondo estilo app de mensajería
       add(new JScrollPane(area), BorderLayout.CENTER);
 
       input = new JTextField();
+      input.setFont(new Font("SansSerif", Font.PLAIN, 14));
       input.addActionListener(e -> {
         String msj = input.getText().trim();
         if (!msj.isEmpty()) {
           String cmd = destino.equals("TODOS") ? "*ALL \"" + msj + "\"" : "*" + destino + " \"" + msj + "\"";
           enviar(cmd);
-          area.append("[Tú -> " + destino + "] " + msj + "\n");
+          // Como este mensaje lo mandas tú, lo alineamos a la derecha
+          agregarMensaje("[Tú] " + msj, true);
           input.setText("");
         }
       });
-      add(input, BorderLayout.SOUTH);
+
+      JPanel panelSur = new JPanel(new BorderLayout());
+      panelSur.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+      panelSur.add(input, BorderLayout.CENTER);
+      add(panelSur, BorderLayout.SOUTH);
     }
 
     public void recibir(String msj) {
-      area.append(msj + "\n");
-      area.setCaretPosition(area.getDocument().getLength());
+      // Como este mensaje llega desde el servidor, lo alineamos a la izquierda
+      agregarMensaje(msj, false);
       if (!isVisible()) setVisible(true);
+    }
+
+    // Método que gestiona la magia de los colores y la alineación
+    private void agregarMensaje(String texto, boolean enviadoPorMi) {
+      StyledDocument doc = area.getStyledDocument();
+
+      // Atributos de alineación (Derecha o Izquierda)
+      SimpleAttributeSet alineacion = new SimpleAttributeSet();
+      StyleConstants.setAlignment(alineacion, enviadoPorMi ? StyleConstants.ALIGN_RIGHT : StyleConstants.ALIGN_LEFT);
+
+      // Atributos de fuente y color
+      SimpleAttributeSet fuente = new SimpleAttributeSet();
+      StyleConstants.setFontFamily(fuente, "SansSerif");
+      StyleConstants.setFontSize(fuente, 13);
+      if (enviadoPorMi) {
+        StyleConstants.setForeground(fuente, new Color(0, 100, 0)); // Verde oscuro para mensajes propios
+        StyleConstants.setBold(fuente, true);
+      } else {
+        StyleConstants.setForeground(fuente, Color.BLACK); // Negro para mensajes recibidos
+        StyleConstants.setBold(fuente, false);
+      }
+
+      try {
+        int length = doc.getLength();
+        doc.insertString(length, texto + "\n\n", fuente); // Inserta texto
+        doc.setParagraphAttributes(length, texto.length() + 2, alineacion, false); // Aplica alineación
+        area.setCaretPosition(doc.getLength()); // Auto-scroll
+      } catch (Exception ex) {
+        ex.printStackTrace();
+      }
     }
   }
 

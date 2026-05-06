@@ -242,3 +242,100 @@
 [06/05/2026 16:34:59] [LOG JMALONS] >>> SALIR
 [06/05/2026 16:34:59] [CLIENTE] JMALONS - DESCONECTADO
 [06/05/2026 16:34:59] [CLIENTE] JMALONS - REMOVIDO DE LA LISTA
+[06/05/2026 16:44:18] [CONEXION] Nuevo cliente desde IP: 192.168.194.174
+[06/05/2026 16:44:18] [CLIENTE] jmalonso (192.168.194.174) - CONECTADO
+[06/05/2026 16:44:21] [LOG jmalonso] >>> LISTA
+[06/05/2026 16:44:21] [LOG jmalonso] >>> PROVINCIAS
+[06/05/2026 16:44:32] [LOG jmalonso] >>> *ALL "Hola"
+[06/05/2026 16:44:32] [MENSAJE] jmalonso envio a TODOS: Hola
+[06/05/2026 16:45:24] [CONEXION] Nuevo cliente desde IP: 192.168.194.119
+[06/05/2026 16:45:24] [CLIENTE] jmallonso (192.168.194.119) - CONECTADO
+[06/05/2026 16:45:28] [LOG jmallonso] >>> LISTA
+[06/05/2026 16:45:40] [LOG jmalonso] >>> *ALL "Hola"
+[06/05/2026 16:45:40] [MENSAJE] jmalonso envio a TODOS: Hola
+[06/05/2026 16:45:46] [LOG jmallonso] >>> *ALL "Hola"
+[06/05/2026 16:45:46] [MENSAJE] jmallonso envio a TODOS: Hola
+[06/05/2026 16:46:40] [LOG jmalonso] >>> *jmallonso "Hola"
+[06/05/2026 16:46:40] [MENSAJE] jmalonso -> jmallonso: Hola
+[06/05/2026 16:46:57] [LOG jmallonso] >>> *jmalonso "Bueno, funciona"
+[06/05/2026 16:46:57] [MENSAJE] jmallonso -> jmalonso: Bueno, funciona
+[06/05/2026 16:47:10] [LOG jmalonso] >>> *jmallonso "sí"
+[06/05/2026 16:47:10] [MENSAJE] jmalonso -> jmallonso: sí
+[06/05/2026 16:47:27] [LOG jmallonso] >>> SALIR
+[06/05/2026 16:47:27] [CLIENTE] jmallonso - DESCONECTADO
+[06/05/2026 16:47:27] [CLIENTE] jmallonso - REMOVIDO DE LA LISTA
+[06/05/2026 16:47:33] [LOG jmalonso] >>> SALIR
+[06/05/2026 16:47:33] [CLIENTE] jmalonso - DESCONECTADO
+[06/05/2026 16:47:33] [CLIENTE] jmalonso - REMOVIDO DE LA LISTA
+[06/05/2026 16:54:13] [CONEXION] Nuevo cliente desde IP: 192.168.194.119
+[06/05/2026 16:54:13] [CLIENTE] 1 (192.168.194.119) - CONECTADO
+[06/05/2026 16:54:23] [CONEXION] Nuevo cliente desde IP: 192.168.194.174
+[06/05/2026 16:54:23] [CLIENTE] 2 (192.168.194.174) - CONECTADO
+[06/05/2026 16:54:48] [LOG 1] >>> *2 "hoolá"
+[06/05/2026 16:54:48] [MENSAJE] 1 -> 2: hoolá
+[06/05/2026 16:54:56] [LOG 2] >>> *1 "Holá"
+[06/05/2026 16:54:56] [MENSAJE] 2 -> 1: Holá
+[06/05/2026 16:55:58] [LOG 2] >>> SALIR
+[06/05/2026 16:55:58] [CLIENTE] 2 - DESCONECTADO
+[06/05/2026 16:55:58] [CLIENTE] 2 - REMOVIDO DE LA LISTA
+[06/05/2026 16:57:26] ============================================
+[06/05/2026 16:57:26]   SERVIDOR INICIADO EN EL PUERTO 6789
+[06/05/2026 16:57:26] ============================================
+[06/05/2026 16:57:26] Esperando conexiones de clientes...
+[06/05/2026 16:57:26] Nota: Puedes conectar clientes desde otras maquinas via ZeroTier
+[06/05/2026 16:57:26]       usando la direccion IP virtual asignada por ZeroTier
+[06/05/2026 16:57:26] Hora inicio: 06/05/2026 16:57:26
+[06/05/2026 16:57:26] 
+[06/05/2026 16:58:24] [CONEXION] Nuevo cliente desde IP: 192.168.194.174
+[06/05/2026 16:58:24] [CLIENTE] jmalónso (192.168.194.174) - CONECTADO
+[06/05/2026 17:00:29] [ERROR] Cliente jmalónso (192.168.194.174): Connection reset
+[06/05/2026 17:00:29] [CLIENTE] jmalónso - REMOVIDO DE LA LISTA
+[06/05/2026 17:05:54] ============================================
+[06/05/2026 17:05:54]   SERVIDOR INICIADO EN EL PUERTO 6789
+[06/05/2026 17:05:54] ============================================
+[06/05/2026 17:05:54] Esperando conexiones de clientes...
+[06/05/2026 17:05:54] Nota: Puedes conectar clientes desde otras maquinas via ZeroTier
+[06/05/2026 17:05:54]       usando la direccion IP virtual asignada por ZeroTier
+[06/05/2026 17:05:54] Hora inicio: 06/05/2026 17:05:54
+[06/05/2026 17:05:54] 
+[06/05/2026 17:06:09] [CONEXION] Nuevo cliente desde IP: 192.168.194.174
+[06/05/2026 17:06:09] [CLIENTE] jmalonso (192.168.194.174) - CONECTADO
+[06/05/2026 17:06:16] [LOG jmalonso] >>> *ALL "Hola"
+[06/05/2026 17:06:16] [MENSAJE] jmalonso envio a TODOS: Hola
+[06/05/2026 17:06:37] [CONEXION] Nuevo cliente desde IP: 192.168.194.119
+[06/05/2026 17:06:37] [CLIENTE] jmalonso1 (192.168.194.119) - CONECTADO
+[06/05/2026 17:06:46] [LOG jmalonso1] >>> *ALL "hol"
+[06/05/2026 17:06:46] [MENSAJE] jmalonso1 envio a TODOS: hol
+[06/05/2026 17:07:03] [LOG jmalonso] >>> SALIR
+[06/05/2026 17:07:03] [CLIENTE] jmalonso - DESCONECTADO
+[06/05/2026 17:07:03] [CLIENTE] jmalonso - REMOVIDO DE LA LISTA
+[06/05/2026 17:07:08] [LOG jmalonso1] >>> SALIR
+[06/05/2026 17:07:08] [CLIENTE] jmalonso1 - DESCONECTADO
+[06/05/2026 17:07:08] [CLIENTE] jmalonso1 - REMOVIDO DE LA LISTA
+[06/05/2026 17:08:04] ============================================
+[06/05/2026 17:08:04]   SERVIDOR INICIADO EN EL PUERTO 6789
+[06/05/2026 17:08:04] ============================================
+[06/05/2026 17:08:04] Esperando conexiones de clientes...
+[06/05/2026 17:08:04] Nota: Puedes conectar clientes desde otras maquinas via ZeroTier
+[06/05/2026 17:08:04]       usando la direccion IP virtual asignada por ZeroTier
+[06/05/2026 17:08:04] Hora inicio: 06/05/2026 17:08:04
+[06/05/2026 17:08:04] 
+[06/05/2026 17:08:43] [CONEXION] Nuevo cliente desde IP: 192.168.194.119
+[06/05/2026 17:08:43] [CLIENTE] test (192.168.194.119) - CONECTADO
+[06/05/2026 17:08:50] [LOG test] >>> *ALL "HOla"
+[06/05/2026 17:08:50] [MENSAJE] test envio a TODOS: HOla
+[06/05/2026 17:08:59] [LOG test] >>> SALIR
+[06/05/2026 17:08:59] [CLIENTE] test - DESCONECTADO
+[06/05/2026 17:08:59] [CLIENTE] test - REMOVIDO DE LA LISTA
+[06/05/2026 17:09:37] [CONEXION] Nuevo cliente desde IP: 192.168.194.174
+[06/05/2026 17:09:37] [CLIENTE] páso (192.168.194.174) - CONECTADO
+[06/05/2026 17:09:57] [LOG páso] >>> *ALL "ñáéíóú"
+[06/05/2026 17:09:57] [MENSAJE] páso envio a TODOS: ñáéíóú
+[06/05/2026 17:10:11] ============================================
+[06/05/2026 17:10:11]   SERVIDOR INICIADO EN EL PUERTO 6789
+[06/05/2026 17:10:11] ============================================
+[06/05/2026 17:10:11] Esperando conexiones de clientes...
+[06/05/2026 17:10:11] Nota: Puedes conectar clientes desde otras maquinas via ZeroTier
+[06/05/2026 17:10:11]       usando la direccion IP virtual asignada por ZeroTier
+[06/05/2026 17:10:11] Hora inicio: 06/05/2026 17:10:11
+[06/05/2026 17:10:11] 
