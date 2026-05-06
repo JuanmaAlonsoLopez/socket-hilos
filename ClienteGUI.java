@@ -1,152 +1,179 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
+import java.io.*;
+import java.net.*;
+import java.nio.charset.Charset;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ClienteGUI extends JFrame {
+  private static final String HOST = "192.168.194.119"; // IP de tu servidor
+  private static final int PUERTO = 6789;
 
-  // Parámetros de conexión hardcodeados
-  private static final String HOST = "192.168.194.119"; // Cambia esto por la IP de tu servidor
-  private static final int PUERTO = 6789;        // Cambia esto por tu puerto
-
-  // Componentes de la interfaz
-  private JTextArea areaChat;
-  private JTextField campoEntrada;
-  private JButton botonEnviar;
-  private JLabel indicadorEstado;
-
-  // Sockets y flujos de datos
   private Socket socket;
   private PrintWriter salida;
   private BufferedReader entrada;
   private String nombreUsuario;
 
-  public ClienteGUI() {
-    // Pedir el nombre de usuario antes de armar la ventana
-    nombreUsuario = JOptionPane.showInputDialog(this, "Ingrese su nombre de usuario:", "Ingreso", JOptionPane.PLAIN_MESSAGE);
-    if (nombreUsuario == null || nombreUsuario.trim().isEmpty()) {
-      System.exit(0); // Si cancela, cerramos la app
-    }
+  private JTextArea areaSalidaGeneral;
+  private JLabel indicadorEstado;
+  private Map<String, VentanaChat> chatsAbiertos = new HashMap<>();
 
-    configurarVentana();
-    conectarAlServidor();
+  public ClienteGUI() {
+    solicitarNombre();
+    configurarVentanaPrincipal();
+    conectar();
   }
 
-  private void configurarVentana() {
-    setTitle("Cliente de Chat y Comandos - " + nombreUsuario);
-    setSize(500, 400);
+  private void solicitarNombre() {
+    nombreUsuario = JOptionPane.showInputDialog(this, "Ingrese su nombre de usuario:", "Registro", JOptionPane.PLAIN_MESSAGE);
+    if (nombreUsuario == null || nombreUsuario.trim().isEmpty()) System.exit(0);
+  }
+
+  private void configurarVentanaPrincipal() {
+    setTitle("Terminal de Comandos - " + nombreUsuario);
+    setSize(600, 450);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    setLocationRelativeTo(null);
     setLayout(new BorderLayout());
 
-    // Panel Superior: Indicador de estado
-    JPanel panelSuperior = new JPanel(new FlowLayout(FlowLayout.LEFT));
-    indicadorEstado = new JLabel("🔴 Desconectado");
+    // Panel Superior: Estado
+    JPanel panelEstado = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    indicadorEstado = new JLabel("● Desconectado");
     indicadorEstado.setForeground(Color.RED);
-    indicadorEstado.setFont(new Font("Arial", Font.BOLD, 14));
-    panelSuperior.add(indicadorEstado);
-    add(panelSuperior, BorderLayout.NORTH);
+    panelEstado.add(indicadorEstado);
+    add(panelEstado, BorderLayout.NORTH);
 
-    // Centro: Área de chat
-    areaChat = new JTextArea();
-    areaChat.setEditable(false);
-    areaChat.setLineWrap(true);
-    areaChat.setFont(new Font("Monospaced", Font.PLAIN, 14));
-    JScrollPane scrollPane = new JScrollPane(areaChat);
-    add(scrollPane, BorderLayout.CENTER);
+    // Centro: Salida de comandos (FECHA, LISTA, PROVINCIAS)
+    areaSalidaGeneral = new JTextArea();
+    areaSalidaGeneral.setEditable(false);
+    areaSalidaGeneral.setBackground(new Color(240, 240, 240));
+    add(new JScrollPane(areaSalidaGeneral), BorderLayout.CENTER);
 
-    // Panel Inferior: Entrada de texto y botón
-    JPanel panelInferior = new JPanel(new BorderLayout());
-    campoEntrada = new JTextField();
-    botonEnviar = new JButton("Enviar");
+    // Lateral: Menú de Botones
+    JPanel panelMenu = new JPanel();
+    panelMenu.setLayout(new GridLayout(8, 1, 5, 5));
+    panelMenu.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-    // Acción al presionar "Enviar" o darle "Enter" al campo de texto
-    ActionListener accionEnviar = new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        enviarMensaje();
-      }
-    };
-    botonEnviar.addActionListener(accionEnviar);
-    campoEntrada.addActionListener(accionEnviar);
+    JButton btnFecha = new JButton("Ver Fecha");
+    JButton btnLista = new JButton("Lista Clientes");
+    JButton btnProvincias = new JButton("Provincias");
+    JButton btnResolver = new JButton("Resolver");
+    JButton btnContar = new JButton("Contar");
+    JButton btnPrivado = new JButton("Chat Privado");
+    JButton btnGlobal = new JButton("Chat Global (*ALL)");
 
-    panelInferior.add(campoEntrada, BorderLayout.CENTER);
-    panelInferior.add(botonEnviar, BorderLayout.EAST);
-    add(panelInferior, BorderLayout.SOUTH);
+    btnFecha.addActionListener(e -> enviar("FECHA"));
+    btnLista.addActionListener(e -> enviar("LISTA"));
+    btnProvincias.addActionListener(e -> enviar("PROVINCIAS"));
+    btnResolver.addActionListener(e -> abrirVentanaOperacion("RESOLVER"));
+    btnContar.addActionListener(e -> abrirVentanaOperacion("CONTAR"));
+    btnPrivado.addActionListener(e -> {
+      String destino = JOptionPane.showInputDialog("¿Con quién quieres hablar?");
+      if (destino != null) obtenerVentanaChat(destino).setVisible(true);
+    });
+    btnGlobal.addActionListener(e -> obtenerVentanaChat("TODOS").setVisible(true));
+
+    panelMenu.add(btnFecha); panelMenu.add(btnLista); panelMenu.add(btnProvincias);
+    panelMenu.add(new JSeparator());
+    panelMenu.add(btnResolver); panelMenu.add(btnContar);
+    panelMenu.add(btnPrivado); panelMenu.add(btnGlobal);
+
+    add(panelMenu, BorderLayout.EAST);
   }
 
-  private void conectarAlServidor() {
+  private void conectar() {
     try {
+      Charset charset = Charset.defaultCharset();
       socket = new Socket(HOST, PUERTO);
-      salida = new PrintWriter(socket.getOutputStream(), true);
-      entrada = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+      salida = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), charset), true);
+      entrada = new BufferedReader(new InputStreamReader(socket.getInputStream(), charset));
 
-      // Actualizar estado visual
-      indicadorEstado.setText("🟢 Conectado a " + HOST);
-      indicadorEstado.setForeground(new Color(0, 153, 0));
+      salida.println("NOMBRE " + nombreUsuario); // Registro inicial
 
-      // Enviar el nombre de usuario apenas nos conectamos
-      salida.println(nombreUsuario);
+      indicadorEstado.setText("● Conectado a " + HOST);
+      indicadorEstado.setForeground(new Color(0, 150, 0));
 
-      // Iniciar el hilo para escuchar los mensajes del servidor
-      Thread hiloEscucha = new Thread(new EscucharServidor());
-      hiloEscucha.start();
-
+      new Thread(this::escucharServidor).start();
     } catch (IOException e) {
-      indicadorEstado.setText("🔴 Error de conexión");
-      areaChat.append("Error al conectar con el servidor: " + e.getMessage() + "\n");
+      areaSalidaGeneral.append("[ERROR] No se pudo conectar: " + e.getMessage());
     }
   }
 
-  private void enviarMensaje() {
-    String mensaje = campoEntrada.getText().trim();
-    if (!mensaje.isEmpty() && salida != null) {
-      // Enviar el comando o mensaje al servidor
-      salida.println(mensaje);
-
-      // Si quieres que el usuario vea lo que él mismo escribió, descomenta la siguiente línea:
-      // areaChat.append("Tú: " + mensaje + "\n");
-
-      campoEntrada.setText("");
-      campoEntrada.requestFocus(); // Devolver el foco al campo de texto
-    }
-  }
-
-  // Clase interna (Hilo) para recibir mensajes sin congelar la interfaz Swing
-  private class EscucharServidor implements Runnable {
-    @Override
-    public void run() {
-      try {
-        String mensajeRecibido;
-        while ((mensajeRecibido = entrada.readLine()) != null) {
-          // SwingUtilities asegura que actualizamos la interfaz gráfica de forma segura
-          final String msj = mensajeRecibido;
-          SwingUtilities.invokeLater(() -> {
-            areaChat.append(msj + "\n");
-            // Auto-scroll hacia abajo
-            areaChat.setCaretPosition(areaChat.getDocument().getLength());
-          });
-        }
-      } catch (IOException e) {
-        SwingUtilities.invokeLater(() -> {
-          indicadorEstado.setText("🔴 Desconectado");
-          indicadorEstado.setForeground(Color.RED);
-          areaChat.append("\n[Conexión cerrada por el servidor]\n");
-        });
+  private void escucharServidor() {
+    try {
+      String linea;
+      while ((linea = entrada.readLine()) != null) {
+        final String msj = linea;
+        SwingUtilities.invokeLater(() -> procesarMensajeServidor(msj));
       }
+    } catch (IOException e) {
+      indicadorEstado.setText("● Desconectado");
+      indicadorEstado.setForeground(Color.RED);
+    }
+  }
+
+  private void procesarMensajeServidor(String msj) {
+    if (msj.contains(" -> TODOS]")) {
+      obtenerVentanaChat("TODOS").recibir(msj);
+    } else if (msj.contains(" -> " + nombreUsuario + "]")) {
+      String remitente = msj.substring(1, msj.indexOf(" -> "));
+      obtenerVentanaChat(remitente).recibir(msj);
+    } else if (msj.startsWith("Resultado de") || msj.startsWith("Texto: \"")) {
+      JOptionPane.showMessageDialog(this, msj, "Resultado de Operación", JOptionPane.INFORMATION_MESSAGE);
+    } else if (!msj.startsWith("---") && !msj.contains("Bienvenido")) {
+      areaSalidaGeneral.append(msj + "\n");
+    }
+  }
+
+  private void abrirVentanaOperacion(String comando) {
+    String input = JOptionPane.showInputDialog(this, "Ingrese la expresión o texto para " + comando + ":");
+    if (input != null) enviar(comando + " \"" + input + "\"");
+  }
+
+  private void enviar(String texto) {
+    if (salida != null) salida.println(texto);
+  }
+
+  private VentanaChat obtenerVentanaChat(String id) {
+    return chatsAbiertos.computeIfAbsent(id, k -> new VentanaChat(id));
+  }
+
+  // Clase para ventanas de chat independientes
+  private class VentanaChat extends JFrame {
+    private JTextArea area;
+    private JTextField input;
+    private String destino;
+
+    public VentanaChat(String destino) {
+      this.destino = destino;
+      setTitle(destino.equals("TODOS") ? "Chat Global" : "Chat con " + destino);
+      setSize(400, 300);
+      setLayout(new BorderLayout());
+
+      area = new JTextArea();
+      area.setEditable(false);
+      add(new JScrollPane(area), BorderLayout.CENTER);
+
+      input = new JTextField();
+      input.addActionListener(e -> {
+        String msj = input.getText().trim();
+        if (!msj.isEmpty()) {
+          String cmd = destino.equals("TODOS") ? "*ALL \"" + msj + "\"" : "*" + destino + " \"" + msj + "\"";
+          enviar(cmd);
+          area.append("[Tú -> " + destino + "] " + msj + "\n");
+          input.setText("");
+        }
+      });
+      add(input, BorderLayout.SOUTH);
+    }
+
+    public void recibir(String msj) {
+      area.append(msj + "\n");
+      if (!isVisible()) setVisible(true);
     }
   }
 
   public static void main(String[] args) {
-    // Iniciar la GUI en el hilo de eventos de Swing (buenas prácticas)
-    SwingUtilities.invokeLater(() -> {
-      ClienteGUI gui = new ClienteGUI();
-      gui.setVisible(true);
-    });
+    SwingUtilities.invokeLater(() -> new ClienteGUI().setVisible(true));
   }
 }

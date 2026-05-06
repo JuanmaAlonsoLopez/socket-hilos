@@ -104,3 +104,29 @@
 [06/05/2026 15:29:04] [LOG Usuario] >>> PROVINCIAS
 [06/05/2026 15:29:19] [LOG Usuario] >>> *ALL "Hola pa"
 [06/05/2026 15:29:19] [MENSAJE] Usuario envio a TODOS: Hola pa
+[06/05/2026 15:37:05] [ERROR] Cliente Usuario (192.168.194.174): Connection reset
+[06/05/2026 15:37:05] [CLIENTE] Usuario - REMOVIDO DE LA LISTA
+[06/05/2026 15:39:11] [CONEXION] Nuevo cliente desde IP: 192.168.194.174
+[06/05/2026 15:39:11] [CLIENTE] jmalonso (192.168.194.174) - CONECTADO
+[06/05/2026 15:39:20] [LOG jmalonso] >>> FECHA
+[06/05/2026 15:39:22] [LOG jmalonso] >>> LISTA
+[06/05/2026 15:39:25] [LOG jmalonso] >>> PROVINCIAS
+[06/05/2026 15:39:32] [LOG jmalonso] >>> RESOLVER "5+5"
+[06/05/2026 15:39:39] [LOG jmalonso] >>> CONTAR "hola"
+[06/05/2026 15:39:52] [LOG jmalonso] >>> *ALL "saa"
+[06/05/2026 15:39:52] [MENSAJE] jmalonso envio a TODOS: saa
+[06/05/2026 15:40:05] [ERROR] Cliente jmalonso (192.168.194.174): Connection reset
+[06/05/2026 15:40:05] [CLIENTE] jmalonso - REMOVIDO DE LA LISTA
+[06/05/2026 15:40:28] [CONEXION] Nuevo cliente desde IP: 192.168.194.174
+[06/05/2026 15:40:28] [CLIENTE] jmalonso (192.168.194.174) - CONECTADO
+[06/05/2026 15:40:34] [LOG jmalonso] >>> FECHA
+[06/05/2026 15:40:36] [LOG jmalonso] >>> LISTA
+[06/05/2026 15:40:38] [LOG jmalonso] >>> PROVINCIAS
+[06/05/2026 15:40:45] [LOG jmalonso] >>> RESOLVER "10-100"
+[06/05/2026 15:40:51] [LOG jmalonso] >>> CONTAR "hola amor"
+[06/05/2026 15:41:07] [LOG jmalonso] >>> *NicoB "Acá hay un error"
+[06/05/2026 15:41:07] [MENSAJE_ERROR] jmalonso intento enviar a NicoB (no existe)
+[06/05/2026 15:41:31] [LOG jmalonso] >>> *ALL "Acá no se si funciona"
+[06/05/2026 15:41:31] [MENSAJE] jmalonso envio a TODOS: Acá no se si funciona
+[06/05/2026 15:42:21] [ERROR] Cliente jmalonso (192.168.194.174): Connection reset
+[06/05/2026 15:42:21] [CLIENTE] jmalonso - REMOVIDO DE LA LISTA

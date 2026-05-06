@@ -99,3 +99,14 @@
 [06/05/2026 15:28:33]       usando la direccion IP virtual asignada por ZeroTier
 [06/05/2026 15:28:33] Hora inicio: 06/05/2026 15:28:33
 [06/05/2026 15:28:33] 
+[06/05/2026 15:28:55] [CONEXION] Nuevo cliente desde IP: 192.168.194.174
+[06/05/2026 15:28:55] [CLIENTE] Usuario (192.168.194.174) - CONECTADO
+[06/05/2026 15:29:04] [LOG Usuario] >>> PROVINCIAS
+[06/05/2026 15:29:19] [LOG Usuario] >>> *ALL "Hola pa"
+[06/05/2026 15:29:19] [MENSAJE] Usuario envio a TODOS: Hola pa
+[06/05/2026 15:37:05] [ERROR] Cliente Usuario (192.168.194.174): Connection reset
+[06/05/2026 15:37:05] [CLIENTE] Usuario - REMOVIDO DE LA LISTA
+[06/05/2026 15:39:11] [CONEXION] Nuevo cliente desde IP: 192.168.194.174
+[06/05/2026 15:39:11] [CLIENTE] jmalonso (192.168.194.174) - CONECTADO
+[06/05/2026 15:39:20] [LOG jmalonso] >>> FECHA
+[06/05/2026 15:39:22] [LOG jmalonso] >>> LISTA
