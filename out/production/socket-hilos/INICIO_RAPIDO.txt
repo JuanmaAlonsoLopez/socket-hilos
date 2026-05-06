@@ -1,0 +1,127 @@
+╔════════════════════════════════════════════════════════════════════════════╗
+║          SERVIDOR SOCKET MULTICLIENTE - INICIO RÁPIDO                     ║
+║          Segunda Parte: Comunicación entre Clientes                       ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+📋 ARCHIVOS INCLUIDOS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. Servidor.java          - Servidor multicliente con gestión de hilos
+2. Cliente.java           - Cliente interactivo mejorado
+3. README.md              - Documentación completa del proyecto
+4. ZEROTIER_GUIDE.md      - Guía paso a paso para conexiones remotas
+5. INFORME.html           - Informe profesional (abrirlo en navegador)
+6. INICIO_RAPIDO.txt      - Este archivo
+
+🚀 PARA EMPEZAR (Local):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. COMPILAR:
+   javac Servidor.java
+   javac Cliente.java
+
+2. ABRIR TERMINAL 1 - EJECUTAR SERVIDOR:
+   java Servidor
+   
+   Verás:
+   ============================================
+     SERVIDOR INICIADO EN EL PUERTO 6789
+   ============================================
+   Esperando conexiones de clientes...
+
+3. ABRIR TERMINAL 2+ - EJECUTAR CLIENTES:
+   java Cliente
+   
+   Verás:
+   ============================================
+     CLIENTE SOCKET
+     Conectando a localhost:6789...
+   ============================================
+   ¡Conexión establecida con el servidor!
+
+📡 COMANDOS DISPONIBLES:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Locales (procesados por servidor):
+  MENU                    - Muestra la lista de comandos
+  FECHA                   - Muestra fecha y hora
+  LISTA                   - Lista clientes conectados
+  RESOLVER "45*23+100"    - Resuelve expresiones matemáticas
+  CONTAR "Hola mundo"     - Cuenta palabras, vocales, consonantes
+  PROVINCIAS              - Muestra provincias de Argentina
+  SALIR                   - Desconecta del servidor
+
+Mensajería (NUEVOS):
+  *Usuario1 "Hola"        - Envía mensaje privado a Usuario1
+  *ALL "Hola a todos"     - Envía mensaje a todos los clientes
+
+📝 EJEMPLO DE SESIÓN:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Terminal 1 (Servidor):
+$ java Servidor
+[16/04/2026 14:30:45] ============================================
+[16/04/2026 14:30:45]   SERVIDOR INICIADO EN EL PUERTO 6789
+[16/04/2026 14:30:46] [CONEXION] Nuevo cliente desde IP: 127.0.0.1
+[16/04/2026 14:30:46] [CLIENTE] Usuario (127.0.0.1) - CONECTADO
+
+Terminal 2 (Cliente 1):
+$ java Cliente
+[TU] > FECHA
+[SERVIDOR] Fecha y Hora: 16/04/2026 14:30:51
+
+[TU] > *ALL "¡Hola a todos!"
+[SERVIDOR] Mensaje enviado a 0 cliente(s).
+
+Terminal 3 (Cliente 2):
+$ java Cliente
+[SERVIDOR] ¡Bienvenido! Tu usuario: Usuario1
+📨 [Usuario -> TODOS] ¡Hola a todos!
+
+[TU] > *Usuario "¿Cómo estás?"
+[SERVIDOR] Mensaje enviado a 'Usuario'.
+
+🌐 PARA CONEXIONES REMOTAS (ZeroTier):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Lee el archivo ZEROTIER_GUIDE.md para instrucciones DETALLADAS.
+
+Pasos rápidos:
+1. Instala ZeroTier: https://www.zerotier.com/download/
+2. Crea una red en: https://my.zerotier.com/
+3. Únete desde cada máquina con el Network ID
+4. Autoriza dispositivos en el panel de control
+5. Modifica Cliente.java con IP ZeroTier del servidor
+6. Modifica Servidor.java para escuchar en todas las interfaces
+
+📊 ARCHIVOS GENERADOS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+servidor.log              - Se crea automáticamente en la carpeta de ejecución
+                           Contiene TODOS los eventos del servidor con timestamp
+
+🔧 TROUBLESHOOTING:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+❌ "Errro al compilar": Verifica tener Java 8+ instalado
+   Comando: java -version
+
+❌ "Puerto ya en uso": Otro programa usa puerto 6789
+   Solución: Espera 2 minutos y vuelve a ejecutar, o cambia el puerto
+
+❌ "No se pudo conectar": El servidor no está corriendo
+   Solución: Abre Terminal 1 y ejecuta "java Servidor" primero
+
+❌ "Comando no reconocido": Revisa el menú con comando MENU
+
+✉️ SOPORTE:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Lee el archivo INFORME.html en tu navegador para documentación completa
+con ejemplos, arquitectura, y detalles de implementación.
+
+👤 AUTOR: Juan Manuel Alonso López
+📅 FECHA: 16 de Abril de 2026
+
+═══════════════════════════════════════════════════════════════════════════════
+¡Listo para comenzar! Ejecuta los comandos anterior y disfruta del sistema. 🚀
+═══════════════════════════════════════════════════════════════════════════════

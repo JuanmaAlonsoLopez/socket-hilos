@@ -1,0 +1,269 @@
+╔════════════════════════════════════════════════════════════════════════════╗
+║                    GUIA PARA WINDOWS (CMD/PowerShell)                     ║
+║          Servidor Socket Multicliente con Comunicacion entre Clientes     ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+PROBLEMA SOLUCIONADO:
+═════════════════════════════════════════════════════════════════════════════
+Si obtuviste este error:
+  "unmappable character (0x9D) for encoding windows-1252"
+
+RAZON: Windows usa encoding Windows-1252 por defecto, mientras que los archivos 
+       estaban en UTF-8 con caracteres especiales (emojis).
+
+SOLUCION: Hemos reemplazado todos los caracteres especiales por equivalentes 
+          ASCII. Los archivos Cliente.java y Servidor.java ya estan corregidos.
+
+═════════════════════════════════════════════════════════════════════════════
+
+PASO 1: VERIFICAR JAVA
+═════════════════════════════════════════════════════════════════════════════
+
+Abre PowerShell o CMD y verifica que Java este instalado:
+
+C:\> java -version
+
+Debes ver algo como:
+  java version "1.8.0_xxx" o mayor
+  Java(TM) SE Runtime Environment...
+
+Si no funciona, descarga Java desde: https://www.oracle.com/java/technologies/downloads/
+
+═════════════════════════════════════════════════════════════════════════════
+
+PASO 2: COMPILAR LOS ARCHIVOS
+═════════════════════════════════════════════════════════════════════════════
+
+En la carpeta donde tengas los archivos, ejecuta:
+
+PS C:\ruta\a\tu\carpeta> javac Servidor.java
+PS C:\ruta\a\tu\carpeta> javac Cliente.java
+
+Si la compilacion es exitosa, no veras mensajes de error.
+Veras dos nuevos archivos: Servidor.class y Cliente.class
+
+═════════════════════════════════════════════════════════════════════════════
+
+PASO 3: EJECUTAR EL SERVIDOR
+═════════════════════════════════════════════════════════════════════════════
+
+Abre UNA PowerShell/CMD y ejecuta:
+
+PS C:\ruta\a\tu\carpeta> java Servidor
+
+Veras:
+  ============================================
+    SERVIDOR INICIADO EN EL PUERTO 6789
+  ============================================
+  Esperando conexiones de clientes...
+  Nota: Puedes conectar clientes desde otras maquinas via ZeroTier
+        usando la direccion IP virtual asignada por ZeroTier
+  Hora inicio: 16/04/2026 14:30:45
+
+IMPORTANTE: Deja esta terminal abierta mientras usas los clientes
+
+═════════════════════════════════════════════════════════════════════════════
+
+PASO 4: EJECUTAR LOS CLIENTES
+═════════════════════════════════════════════════════════════════════════════
+
+Abre NUEVAS PowerShell/CMD (no cierres la del servidor) y ejecuta:
+
+PS C:\ruta\a\tu\carpeta> java Cliente
+
+Veras:
+  ============================================
+    CLIENTE SOCKET
+    Conectando a localhost:6789...
+  ============================================
+  Conexion establecida con el servidor!
+
+  [SERVIDOR] ============================================
+  [SERVIDOR]   Bienvenido al Servidor Socket!
+  [SERVIDOR]   Tu usuario: Usuario
+  [SERVIDOR] ============================================
+
+  [TU] >
+
+Puedes abrir multiples clientes. Cada uno recibira un nombre unico:
+- Primer cliente:  Usuario
+- Segundo cliente: Usuario1
+- Tercer cliente:  Usuario2
+- Etc.
+
+═════════════════════════════════════════════════════════════════════════════
+
+COMANDOS BASICOS PARA PROBAR
+═════════════════════════════════════════════════════════════════════════════
+
+En cualquier cliente, prueba estos comandos:
+
+[TU] > MENU
+  [Muestra lista de comandos disponibles]
+
+[TU] > FECHA
+  [SERVIDOR] Fecha y Hora: 16/04/2026 14:30:51
+
+[TU] > LISTA
+  [SERVIDOR] Clientes conectados (1 total):
+  [SERVIDOR]   1. Usuario (IP: 127.0.0.1)
+
+[TU] > RESOLVER "2+2*5"
+  [SERVIDOR] Resultado de [2+2*5] = 12
+
+[TU] > CONTAR "Hola mundo"
+  [SERVIDOR] Texto: "Hola mundo"
+  [SERVIDOR]   -> Palabras:     2
+  [SERVIDOR]   -> Vocales:      3
+  [SERVIDOR]   -> Consonantes:  4
+
+[TU] > PROVINCIAS
+  [Muestra 24 provincias de Argentina]
+
+[TU] > SALIR
+  [Desconecta del servidor]
+
+═════════════════════════════════════════════════════════════════════════════
+
+MENSAJERIA ENTRE CLIENTES
+═════════════════════════════════════════════════════════════════════════════
+
+Abre 2 clientes diferentes.
+
+Cliente 1:
+[TU] > *Usuario1 "Hola, como estas?"
+[SERVIDOR] Mensaje enviado a 'Usuario1'.
+
+Cliente 2 (Usuario1):
+[MENSAJE] [Usuario -> Usuario1] Hola, como estas?
+[TU] > *Usuario "Estoy bien, gracias!"
+[SERVIDOR] Mensaje enviado a 'Usuario'.
+
+Cliente 1:
+[MENSAJE] [Usuario1 -> Usuario] Estoy bien, gracias!
+
+═════════════════════════════════════════════════════════════════════════════
+
+ENVIAR A TODOS LOS CLIENTES
+═════════════════════════════════════════════════════════════════════════════
+
+Cliente 1:
+[TU] > *ALL "Hola a todos!"
+[SERVIDOR] Mensaje enviado a 1 cliente(s).
+
+Todos los demas clientes recibirán:
+[MENSAJE] [Usuario -> TODOS] Hola a todos!
+
+═════════════════════════════════════════════════════════════════════════════
+
+TROUBLESHOOTING (SOLUCIONAR PROBLEMAS)
+═════════════════════════════════════════════════════════════════════════════
+
+ERROR: "javac: comando no reconocido"
+SOLUCION: Java no esta en el PATH. Agrega Java al PATH:
+  1. Control Panel > System > Advanced System Settings
+  2. Environment Variables
+  3. En "Path", agrega: C:\Program Files\Java\jdk1.8.0_xxx\bin
+  4. Reinicia PowerShell/CMD
+
+ERROR: "Address already in use"
+SOLUCION: Puerto 6789 ya esta en uso
+  - Espera 2 minutos e intenta de nuevo
+  - O cambia el puerto en Servidor.java (linea 40):
+    private static final int PUERTO = 6789;  // Cambiar a otro numero
+
+ERROR: "Connection refused" en cliente
+SOLUCION: El servidor no esta corriendo
+  - Asegurate de ejecutar PRIMERO: java Servidor
+  - En una terminal SEPARADA
+
+ERROR: Caracteres raros en la consola
+SOLUCION: PowerShell puede tener problemas de encoding
+  - Ejecuta al inicio: chcp 65001
+  - O usa CMD en lugar de PowerShell
+
+ERROR: "Formato invalido" al enviar mensaje
+SOLUCION: El formato debe ser exacto:
+  Correcto:   *Usuario1 "Hola"
+  Incorrecto: *Usuario1 Hola     (sin comillas)
+  Incorrecto: *Usuario1 "Hola    (comillas sin cerrar)
+
+═════════════════════════════════════════════════════════════════════════════
+
+ARCHIVO DE LOG
+═════════════════════════════════════════════════════════════════════════════
+
+Se crea automaticamente: servidor.log
+
+Este archivo contiene TODAS las operaciones con timestamp:
+  [16/04/2026 14:30:45] [CLIENTE] Usuario (127.0.0.1) - CONECTADO
+  [16/04/2026 14:30:52] [LOG Usuario] >>> FECHA
+  [16/04/2026 14:30:59] [MENSAJE] Usuario envio a TODOS: Hola a todos
+  [16/04/2026 14:31:05] [CLIENTE] Usuario1 (127.0.0.1) - CONECTADO
+
+Puedes abrirlo con Notepad o cualquier editor de texto.
+
+═════════════════════════════════════════════════════════════════════════════
+
+CONEXION REMOTA (ZeroTier en Windows)
+═════════════════════════════════════════════════════════════════════════════
+
+Para conectar desde otra computadora via ZeroTier:
+
+1. Descarga ZeroTier: https://www.zerotier.com/download/
+2. Instala (siguiente, siguiente, finalizar)
+3. Ve a https://my.zerotier.com/ y crea una red
+4. Copia el Network ID (16 caracteres)
+5. En ZeroTier: haz clic derecho > Join Network > pega el ID
+6. Autoriza el dispositivo en https://my.zerotier.com/
+7. Obtén tu IP virtual de ZeroTier (192.168.196.xxx)
+
+En Cliente.java, cambia:
+  private static final String HOST = "localhost";
+Por:
+  private static final String HOST = "192.168.196.42";  // IP ZeroTier del servidor
+
+Recompila y ejecuta desde la otra maquina.
+
+Ver archivo: ZEROTIER_GUIDE.md para instrucciones completas
+
+═════════════════════════════════════════════════════════════════════════════
+
+TIPS UTILES
+═════════════════════════════════════════════════════════════════════════════
+
+1. Para limpiar la pantalla:
+   - PowerShell: cls
+   - CMD: cls
+
+2. Para ver el contenido del archivo log:
+   - CMD: type servidor.log
+   - PowerShell: Get-Content servidor.log
+
+3. Para matar un proceso Java (si se queda colgado):
+   - PowerShell: taskkill /IM java.exe /F
+   - CMD: taskkill /IM java.exe /F
+
+4. Compila con banderas de debug si necesitas:
+   javac -g Servidor.java
+   java -Xmx512m Servidor   (aumenta memoria si es necesario)
+
+═════════════════════════════════════════════════════════════════════════════
+
+ARCHIVOS DESCARGADOS
+═════════════════════════════════════════════════════════════════════════════
+
+✓ Servidor.java          - Servidor sin caracteres especiales (LISTA!)
+✓ Cliente.java           - Cliente sin caracteres especiales (LISTA!)
+✓ README.md              - Documentacion completa
+✓ ZEROTIER_GUIDE.md      - Guia para conexiones remotas
+✓ INFORME.html           - Abre en navegador para ver informe profesional
+✓ WINDOWS_GUIA.txt       - Este archivo (te estamos leyendo ahora)
+✓ INICIO_RAPIDO.txt      - Instrucciones rapidas generales
+
+═════════════════════════════════════════════════════════════════════════════
+
+Listo! Ya puedes compilar y ejecutar. Si tienes mas problemas, contacta soporte.
+
+Autor: Juan Manuel Alonso Lopez
+Fecha: 16 de Abril de 2026

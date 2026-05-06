@@ -1,0 +1,304 @@
+═══════════════════════════════════════════════════════════════════════════════
+                          VERIFICACION Y CHECKLIST
+═══════════════════════════════════════════════════════════════════════════════
+
+ARCHIVOS QUE DEBES TENER:
+═════════════════════════════════════════════════════════════════════════════
+
+[ ] Servidor.java          - Codigo del servidor (470 lineas)
+[ ] Cliente.java           - Codigo del cliente (120 lineas)
+[ ] README.md              - Documentacion tecnica completa
+[ ] ZEROTIER_GUIDE.md      - Guia detallada para conexiones remotas
+[ ] INFORME.html           - Informe profesional (abrirlo en navegador)
+[ ] WINDOWS_GUIA.txt       - Guia especifica para Windows
+[ ] INICIO_RAPIDO.txt      - Instrucciones rapidas
+[ ] VERIFICACION.txt       - Este archivo
+
+═════════════════════════════════════════════════════════════════════════════
+
+ANTES DE COMPILAR - VERIFICACION DE CONTENIDO
+═════════════════════════════════════════════════════════════════════════════
+
+Abre Servidor.java y verifica que:
+[ ] No tiene emojis (☐, ✓, ❌, 📨, 🚀, etc.)
+[ ] Tiene "UTF-8" en los InputStreamReader y OutputStreamWriter
+[ ] La clase interna "ClienteConectado" esta definida
+[ ] El metodo "asignarNombreUnico" usa synchronized
+[ ] El metodo "imprimirYLoguear" escribe en servidor.log
+
+Abre Cliente.java y verifica que:
+[ ] No tiene emojis
+[ ] Tiene encoding "UTF-8" explicitamente
+[ ] Tiene "Scanner scanner = new Scanner(System.in, "UTF-8")"
+[ ] El hilo lector es un daemon (hiloLector.setDaemon(true))
+[ ] Valida formato de mensajes (*NOMBRE "mensaje")
+
+═════════════════════════════════════════════════════════════════════════════
+
+PASO A PASO PARA COMPILAR EN WINDOWS
+═════════════════════════════════════════════════════════════════════════════
+
+1. ABRE PowerShell (Windows key + X > Windows PowerShell)
+   O CMD (Windows key + R > cmd > Enter)
+
+2. NAVEGA A LA CARPETA:
+   cd "C:\ruta\donde\tengas\los\archivos"
+   
+   Ejemplo:
+   cd "C:\Users\Juanma y pedemont\OneDrive - alumnos.frm.utn.edu.ar\Facultad\3° Primer semestre\Programación Avanzada\socket-hilos"
+
+3. VERIFICA QUE LOS ARCHIVOS ESTEN AHI:
+   PS C:\ruta> ls *.java
+   
+   Debes ver:
+   Servidor.java
+   Cliente.java
+
+4. COMPILA SERVIDOR:
+   PS C:\ruta> javac Servidor.java
+   
+   Si no hay error, la compilacion fue exitosa
+   Se creara un archivo: Servidor.class
+
+5. COMPILA CLIENTE:
+   PS C:\ruta> javac Cliente.java
+   
+   Se creara un archivo: Cliente.class
+
+6. VERIFICA QUE SE CREARON LOS .CLASS:
+   PS C:\ruta> ls *.class
+   
+   Debes ver:
+   Servidor.class
+   Cliente.class
+
+═════════════════════════════════════════════════════════════════════════════
+
+POSIBLES ERRORES Y SOLUCIONES
+═════════════════════════════════════════════════════════════════════════════
+
+ERROR: "javac: command not found" o "no se reconoce el termino javac"
+───────────────────────────────────────────────────────────────────────────
+SOLUCION:
+1. Verifica que Java este instalado:
+   PS C:\ruta> java -version
+   
+2. Si no funciona, instala Java desde:
+   https://www.oracle.com/java/technologies/downloads/
+   
+3. Agrega Java al PATH:
+   - Abre: Control Panel > System and Security > System
+   - Haz clic en: Advanced system settings
+   - Haz clic en: Environment Variables
+   - En "System variables", edita "Path"
+   - Agrega: C:\Program Files\Java\jdk-XX\bin
+   - Haz clic OK varias veces
+   - REINICIA PowerShell/CMD
+
+ERROR: "unmappable character" o "invalid character for encoding"
+───────────────────────────────────────────────────────────────────────────
+SOLUCION: 
+✓ YA ESTA SOLUCIONADO en los archivos proporcionados
+- Hemos removido TODOS los caracteres especiales (emojis)
+- Solo tienes caracteres ASCII simples
+- Si aun tienes error, asegurate de tener la version CORREGIDA
+  de Servidor.java y Cliente.java
+
+ERROR: "Address already in use"
+───────────────────────────────────────────────────────────────────────────
+SOLUCION:
+1. El puerto 6789 esta en uso por otro programa
+2. Opcion A: Espera 2 minutos e intenta nuevamente
+3. Opcion B: Usa otro puerto (cambiar en Servidor.java linea 40):
+   private static final int PUERTO = 6789;  // Cambiar a 6790, 6791, etc
+4. Opcion C: Mata el proceso java:
+   PS C:\ruta> taskkill /IM java.exe /F
+
+ERROR: "Connection refused" en el cliente
+───────────────────────────────────────────────────────────────────────────
+SOLUCION:
+1. Asegurate que el SERVIDOR esta corriendo PRIMERO
+2. Abre una Terminal separada para el servidor
+3. Espera a ver "Esperando conexiones de clientes..."
+4. Luego ejecuta el cliente en OTRA terminal
+
+═════════════════════════════════════════════════════════════════════════════
+
+COMO EJECUTAR - CHECKLIST FINAL
+═════════════════════════════════════════════════════════════════════════════
+
+[A] TERMINAL 1 - SERVIDOR:
+    PS C:\ruta> java Servidor
+    
+    Debes ver:
+    ============================================
+      SERVIDOR INICIADO EN EL PUERTO 6789
+    ============================================
+    Esperando conexiones de clientes...
+    
+    DEJA ESTA TERMINAL ABIERTA
+
+[B] TERMINAL 2 - CLIENTE 1:
+    PS C:\ruta> java Cliente
+    
+    Debes ver:
+    ============================================
+      CLIENTE SOCKET
+      Conectando a localhost:6789...
+    ============================================
+    Conexion establecida con el servidor!
+    
+    [TU] >
+
+[C] TERMINAL 3 - CLIENTE 2 (OPCIONAL):
+    PS C:\ruta> java Cliente
+    
+    Mismo resultado que Terminal 2, pero con nombre Usuario1
+
+[D] PRUEBA DE COMUNICACION:
+    
+    En Terminal 2 (Cliente Usuario):
+    [TU] > *Usuario1 "Hola Usuario1"
+    [SERVIDOR] Mensaje enviado a 'Usuario1'.
+    
+    En Terminal 3 (Cliente Usuario1):
+    [MENSAJE] [Usuario -> Usuario1] Hola Usuario1
+    
+    En Terminal 3:
+    [TU] > *Usuario "Hola Usuario"
+    [SERVIDOR] Mensaje enviado a 'Usuario'.
+    
+    En Terminal 2:
+    [MENSAJE] [Usuario1 -> Usuario] Hola Usuario
+
+═════════════════════════════════════════════════════════════════════════════
+
+ARCHIVO DE LOG
+═════════════════════════════════════════════════════════════════════════════
+
+Se crea automaticamente en la misma carpeta: servidor.log
+
+COMO VERLO:
+PS C:\ruta> type servidor.log     (en CMD)
+PS C:\ruta> Get-Content servidor.log  (en PowerShell)
+
+CONTENIDO ESPERADO:
+[16/04/2026 14:30:45] ============================================
+[16/04/2026 14:30:45]   SERVIDOR INICIADO EN EL PUERTO 6789
+[16/04/2026 14:30:46] [CONEXION] Nuevo cliente desde IP: 127.0.0.1
+[16/04/2026 14:30:46] [CLIENTE] Usuario (127.0.0.1) - CONECTADO
+[16/04/2026 14:30:52] [LOG Usuario] >>> FECHA
+
+═════════════════════════════════════════════════════════════════════════════
+
+DOCUMENTACION ADICIONAL
+═════════════════════════════════════════════════════════════════════════════
+
+Para mas informacion, abre:
+
+1. INFORME.html
+   - Abrelo en tu navegador (Chrome, Firefox, Edge)
+   - Contiene documentacion completa y profesional
+   - Puedes imprimirlo a PDF (Ctrl+P > Guardar como PDF)
+
+2. ZEROTIER_GUIDE.md
+   - Abrelo en un editor de texto o Notepad
+   - Instrucciones paso a paso para conexiones remotas
+   - Como crear una red virtual para conectar multiples maquinas
+
+3. README.md
+   - Documentacion tecnica del proyecto
+   - Arquitectura, comandos, ejemplos
+
+═════════════════════════════════════════════════════════════════════════════
+
+PARA GITHUB
+═════════════════════════════════════════════════════════════════════════════
+
+Cuando subas a GitHub:
+
+1. Copia estos archivos a tu repositorio:
+   [ ] Servidor.java
+   [ ] Cliente.java
+   [ ] README.md (actualizado)
+   [ ] Toda la documentacion
+
+2. En la raiz del repositorio, crea un README.md principal con:
+   - Descripcion del proyecto
+   - Como compilar
+   - Como ejecutar
+   - Comandos disponibles
+   - Link a INFORME.html
+
+3. Agrega el archivo servidor.log (si existe) al .gitignore
+
+4. Opcionalmente, agrega un archivo .gitignore:
+   *.class
+   servidor.log
+   .DS_Store
+
+5. Sube todo a GitHub
+
+═════════════════════════════════════════════════════════════════════════════
+
+ULTIMO PASO: INFORME PDF
+═════════════════════════════════════════════════════════════════════════════
+
+Para crear el informe PDF:
+
+1. Abre INFORME.html en tu navegador (Chrome, Firefox, Edge)
+2. Presiona Ctrl+P o Cmd+P
+3. En "Destination" selecciona "Save as PDF"
+4. Haz clic en "Save"
+5. Guarda como: INFORME_Socket_Multicliente.pdf
+
+El PDF incluira:
+- Introduccion y caracteristicas
+- Comandos disponibles
+- Arquitectura del sistema
+- Detalles de implementacion
+- Ejemplos de uso
+- Pruebas realizadas
+- Conclusiones
+
+═════════════════════════════════════════════════════════════════════════════
+
+CHECKLIST FINAL ANTES DE ENTREGAR
+═════════════════════════════════════════════════════════════════════════════
+
+[ ] Servidor.java compila sin errores
+[ ] Cliente.java compila sin errores
+[ ] El servidor se ejecuta en puerto 6789
+[ ] 2+ clientes pueden conectarse simultaneamente
+[ ] Los clientes reciben nombres unicos (Usuario, Usuario1, etc.)
+[ ] Los mensajes *NOMBRE funcionan correctamente
+[ ] Los mensajes *ALL funcionan correctamente
+[ ] El comando LISTA muestra todos los clientes
+[ ] El comando FECHA muestra fecha y hora
+[ ] El archivo servidor.log se crea automaticamente
+[ ] Se pueden enviar comandos RESOLVER, CONTAR, PROVINCIAS
+[ ] Un cliente puede hacer SALIR sin afectar otros clientes
+[ ] INFORME.html se abre en navegador sin errores
+[ ] README.md existe y tiene documentacion completa
+[ ] ZEROTIER_GUIDE.md existe para conexiones remotas
+[ ] Todos los archivos .java estan en GitHub
+
+═════════════════════════════════════════════════════════════════════════════
+
+NECESITAS AYUDA?
+═════════════════════════════════════════════════════════════════════════════
+
+1. Lee nuevamente WINDOWS_GUIA.txt (especifico para Windows)
+2. Abre INFORME.html en navegador y busca "Troubleshooting"
+3. Verifica los errores comunes arriba
+4. Comprueba que Java este instalado (java -version)
+5. Verifica que los archivos .java esten en la carpeta correcta
+
+═════════════════════════════════════════════════════════════════════════════
+
+FECHA DE CREACION: 16 de Abril de 2026
+AUTOR: Juan Manuel Alonso Lopez
+MATERIA: Programacion Avanzada - Java
+INSTITUCION: Universidad Tecnologica Nacional (UTN)
+
+═══════════════════════════════════════════════════════════════════════════════

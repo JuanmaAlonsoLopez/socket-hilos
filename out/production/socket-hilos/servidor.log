@@ -99,8 +99,3 @@
 [06/05/2026 15:28:33]       usando la direccion IP virtual asignada por ZeroTier
 [06/05/2026 15:28:33] Hora inicio: 06/05/2026 15:28:33
 [06/05/2026 15:28:33] 
-[06/05/2026 15:28:55] [CONEXION] Nuevo cliente desde IP: 192.168.194.174
-[06/05/2026 15:28:55] [CLIENTE] Usuario (192.168.194.174) - CONECTADO
-[06/05/2026 15:29:04] [LOG Usuario] >>> PROVINCIAS
-[06/05/2026 15:29:19] [LOG Usuario] >>> *ALL "Hola pa"
-[06/05/2026 15:29:19] [MENSAJE] Usuario envio a TODOS: Hola pa
