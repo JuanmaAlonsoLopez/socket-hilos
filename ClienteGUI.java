@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ClienteGUI extends JFrame {
-  private static final String HOST = "192.168.194.119"; // IP de tu servidor
+  private static final String HOST = "192.168.194.119";
   private static final int PUERTO = 6789;
 
   private Socket socket;
@@ -32,8 +32,16 @@ public class ClienteGUI extends JFrame {
 
   private void configurarVentanaPrincipal() {
     setTitle("Terminal de Comandos - " + nombreUsuario);
-    setSize(600, 450);
-    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    setSize(750, 600);
+    // Cambiamos el comportamiento de la X para que use nuestro método de salida limpia
+    setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+    addWindowListener(new java.awt.event.WindowAdapter() {
+      @Override
+      public void windowClosing(java.awt.event.WindowEvent e) {
+        salirDelSistema();
+      }
+    });
+
     setLayout(new BorderLayout());
 
     // Panel Superior: Estado
@@ -43,15 +51,19 @@ public class ClienteGUI extends JFrame {
     panelEstado.add(indicadorEstado);
     add(panelEstado, BorderLayout.NORTH);
 
-    // Centro: Salida de comandos (FECHA, LISTA, PROVINCIAS)
+    // Centro: Salida de comandos
     areaSalidaGeneral = new JTextArea();
     areaSalidaGeneral.setEditable(false);
     areaSalidaGeneral.setBackground(new Color(240, 240, 240));
+    areaSalidaGeneral.setFont(new Font("Monospaced", Font.PLAIN, 12));
     add(new JScrollPane(areaSalidaGeneral), BorderLayout.CENTER);
 
-    // Lateral: Menú de Botones
+    limpiarYMostrarMenu();
+
+    // Lateral: Menú de Botones (Derecha)
     JPanel panelMenu = new JPanel();
-    panelMenu.setLayout(new GridLayout(8, 1, 5, 5));
+    // Ajustamos a 11 filas para incluir separador y botón Salir
+    panelMenu.setLayout(new GridLayout(11, 1, 5, 5));
     panelMenu.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
     JButton btnFecha = new JButton("Ver Fecha");
@@ -60,7 +72,11 @@ public class ClienteGUI extends JFrame {
     JButton btnResolver = new JButton("Resolver");
     JButton btnContar = new JButton("Contar");
     JButton btnPrivado = new JButton("Chat Privado");
-    JButton btnGlobal = new JButton("Chat Global (*ALL)");
+    JButton btnGlobal = new JButton("Chat Global");
+    JButton btnSalir = new JButton("Salir");
+
+    // Estilo especial para el botón de salir
+    btnSalir.setBackground(new Color(255, 204, 204));
 
     btnFecha.addActionListener(e -> enviar("FECHA"));
     btnLista.addActionListener(e -> enviar("LISTA"));
@@ -69,16 +85,62 @@ public class ClienteGUI extends JFrame {
     btnContar.addActionListener(e -> abrirVentanaOperacion("CONTAR"));
     btnPrivado.addActionListener(e -> {
       String destino = JOptionPane.showInputDialog("¿Con quién quieres hablar?");
-      if (destino != null) obtenerVentanaChat(destino).setVisible(true);
+      if (destino != null && !destino.trim().isEmpty()) {
+        obtenerVentanaChat(destino).setVisible(true);
+      }
     });
     btnGlobal.addActionListener(e -> obtenerVentanaChat("TODOS").setVisible(true));
+    btnSalir.addActionListener(e -> salirDelSistema());
 
-    panelMenu.add(btnFecha); panelMenu.add(btnLista); panelMenu.add(btnProvincias);
+    panelMenu.add(btnFecha);
+    panelMenu.add(btnLista);
+    panelMenu.add(btnProvincias);
     panelMenu.add(new JSeparator());
-    panelMenu.add(btnResolver); panelMenu.add(btnContar);
-    panelMenu.add(btnPrivado); panelMenu.add(btnGlobal);
+    panelMenu.add(btnResolver);
+    panelMenu.add(btnContar);
+    panelMenu.add(new JSeparator());
+    panelMenu.add(btnPrivado);
+    panelMenu.add(btnGlobal);
+    panelMenu.add(new JSeparator());
+    panelMenu.add(btnSalir);
 
     add(panelMenu, BorderLayout.EAST);
+
+    // Panel Inferior: Botón Limpiar
+    JPanel panelInferior = new JPanel(new FlowLayout(FlowLayout.CENTER));
+    JButton btnLimpiar = new JButton("Limpiar Pantalla");
+    btnLimpiar.setPreferredSize(new Dimension(150, 30));
+    btnLimpiar.addActionListener(e -> limpiarYMostrarMenu());
+    panelInferior.add(btnLimpiar);
+    add(panelInferior, BorderLayout.SOUTH);
+  }
+
+  private void salirDelSistema() {
+    int confirmar = JOptionPane.showConfirmDialog(this,
+        "¿Estás seguro de que deseas salir?", "Confirmar Salida",
+        JOptionPane.YES_NO_OPTION);
+
+    if (confirmar == JOptionPane.YES_OPTION) {
+      enviar("SALIR"); // Avisa al servidor
+      System.exit(0);  // Cierra la aplicación
+    }
+  }
+
+  private void limpiarYMostrarMenu() {
+    String menuHeader = "============================================\n" +
+        "  Tu usuario: " + nombreUsuario + "\n" +
+        "============================================\n\n" +
+        "  MENU                     - Muestra este menu\n" +
+        "  FECHA                    - Muestra fecha y hora\n" +
+        "  LISTA                    - Lista clientes conectados\n" +
+        "  RESOLVER                 - Ej: RESOLVER \"45*23/54+234\"\n" +
+        "  CONTAR                   - Ej: CONTAR \"Hola mundo\"\n" +
+        "  PROVINCIAS               - Lista provincias de Argentina\n" +
+        "  CHAT PRIVADO             - Envia mensaje a un cliente\n" +
+        "  CHAT GLOBAL              - Envia mensaje a todos\n" +
+        "  SALIR                    - Desconectarse\n\n" +
+        "--------------------------------------------\n";
+    areaSalidaGeneral.setText(menuHeader);
   }
 
   private void conectar() {
@@ -88,14 +150,14 @@ public class ClienteGUI extends JFrame {
       salida = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), charset), true);
       entrada = new BufferedReader(new InputStreamReader(socket.getInputStream(), charset));
 
-      salida.println("NOMBRE " + nombreUsuario); // Registro inicial
+      salida.println("NOMBRE " + nombreUsuario);
 
       indicadorEstado.setText("● Conectado a " + HOST);
       indicadorEstado.setForeground(new Color(0, 150, 0));
 
       new Thread(this::escucharServidor).start();
     } catch (IOException e) {
-      areaSalidaGeneral.append("[ERROR] No se pudo conectar: " + e.getMessage());
+      areaSalidaGeneral.append("[ERROR] No se pudo conectar: " + e.getMessage() + "\n");
     }
   }
 
@@ -107,8 +169,10 @@ public class ClienteGUI extends JFrame {
         SwingUtilities.invokeLater(() -> procesarMensajeServidor(msj));
       }
     } catch (IOException e) {
-      indicadorEstado.setText("● Desconectado");
-      indicadorEstado.setForeground(Color.RED);
+      SwingUtilities.invokeLater(() -> {
+        indicadorEstado.setText("● Desconectado");
+        indicadorEstado.setForeground(Color.RED);
+      });
     }
   }
 
@@ -120,14 +184,23 @@ public class ClienteGUI extends JFrame {
       obtenerVentanaChat(remitente).recibir(msj);
     } else if (msj.startsWith("Resultado de") || msj.startsWith("Texto: \"")) {
       JOptionPane.showMessageDialog(this, msj, "Resultado de Operación", JOptionPane.INFORMATION_MESSAGE);
-    } else if (!msj.startsWith("---") && !msj.contains("Bienvenido")) {
+    } else if (
+        !msj.startsWith("---") &&
+            !msj.contains("Bienvenido") &&
+            !msj.contains("Tu usuario:") &&
+            !msj.contains("============================================") &&
+            !msj.contains(" - ")
+    ) {
       areaSalidaGeneral.append(msj + "\n");
+      areaSalidaGeneral.setCaretPosition(areaSalidaGeneral.getDocument().getLength());
     }
   }
 
   private void abrirVentanaOperacion(String comando) {
-    String input = JOptionPane.showInputDialog(this, "Ingrese la expresión o texto para " + comando + ":");
-    if (input != null) enviar(comando + " \"" + input + "\"");
+    String input = JOptionPane.showInputDialog(this, "Ingrese el dato para " + comando + ":");
+    if (input != null && !input.trim().isEmpty()) {
+      enviar(comando + " \"" + input + "\"");
+    }
   }
 
   private void enviar(String texto) {
@@ -138,7 +211,6 @@ public class ClienteGUI extends JFrame {
     return chatsAbiertos.computeIfAbsent(id, k -> new VentanaChat(id));
   }
 
-  // Clase para ventanas de chat independientes
   private class VentanaChat extends JFrame {
     private JTextArea area;
     private JTextField input;
@@ -152,6 +224,7 @@ public class ClienteGUI extends JFrame {
 
       area = new JTextArea();
       area.setEditable(false);
+      area.setFont(new Font("SansSerif", Font.PLAIN, 12));
       add(new JScrollPane(area), BorderLayout.CENTER);
 
       input = new JTextField();
@@ -169,6 +242,7 @@ public class ClienteGUI extends JFrame {
 
     public void recibir(String msj) {
       area.append(msj + "\n");
+      area.setCaretPosition(area.getDocument().getLength());
       if (!isVisible()) setVisible(true);
     }
   }

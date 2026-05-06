@@ -130,3 +130,115 @@
 [06/05/2026 15:41:31] [MENSAJE] jmalonso envio a TODOS: Acá no se si funciona
 [06/05/2026 15:42:21] [ERROR] Cliente jmalonso (192.168.194.174): Connection reset
 [06/05/2026 15:42:21] [CLIENTE] jmalonso - REMOVIDO DE LA LISTA
+[06/05/2026 15:47:45] [CONEXION] Nuevo cliente desde IP: 192.168.194.174
+[06/05/2026 15:47:45] [CLIENTE] jmalonso (192.168.194.174) - CONECTADO
+[06/05/2026 15:49:21] [LOG jmalonso] >>> LISTA
+[06/05/2026 15:49:22] [LOG jmalonso] >>> LISTA
+[06/05/2026 15:51:55] [LOG jmalonso] >>> LISTA
+[06/05/2026 15:52:26] [LOG jmalonso] >>> LISTA
+[06/05/2026 15:53:49] [LOG jmalonso] >>> LISTA
+[06/05/2026 15:58:12] [CONEXION] Nuevo cliente desde IP: 192.168.194.119
+[06/05/2026 15:58:12] [CLIENTE] juanma2 (192.168.194.119) - CONECTADO
+[06/05/2026 15:58:27] [LOG jmalonso] >>> LISTA
+[06/05/2026 15:58:50] [LOG jmalonso] >>> *juanma2 "Hola"
+[06/05/2026 15:58:50] [MENSAJE] jmalonso -> juanma2: Hola
+[06/05/2026 15:58:54] [LOG juanma2] >>> *jmalonso "Holaa"
+[06/05/2026 15:58:54] [MENSAJE] juanma2 -> jmalonso: Holaa
+[06/05/2026 15:59:19] [ERROR] Cliente juanma2 (192.168.194.119): Connection reset
+[06/05/2026 15:59:19] [CLIENTE] juanma2 - REMOVIDO DE LA LISTA
+[06/05/2026 15:59:23] [ERROR] Cliente jmalonso (192.168.194.174): Connection reset
+[06/05/2026 15:59:23] [CLIENTE] jmalonso - REMOVIDO DE LA LISTA
+[06/05/2026 16:02:32] [CONEXION] Nuevo cliente desde IP: 192.168.194.174
+[06/05/2026 16:02:32] [CLIENTE] jmalonso (192.168.194.174) - CONECTADO
+[06/05/2026 16:06:11] [CONEXION] Nuevo cliente desde IP: 192.168.194.174
+[06/05/2026 16:06:11] [CLIENTE] jmalonso1 (192.168.194.174) - CONECTADO
+[06/05/2026 16:06:21] [LOG jmalonso1] >>> FECHA
+[06/05/2026 16:06:24] [LOG jmalonso1] >>> FECHA
+[06/05/2026 16:06:28] [ERROR] Cliente jmalonso1 (192.168.194.174): Connection reset
+[06/05/2026 16:06:28] [CLIENTE] jmalonso1 - REMOVIDO DE LA LISTA
+[06/05/2026 16:06:45] [ERROR] Cliente jmalonso (192.168.194.174): Connection reset
+[06/05/2026 16:06:45] [CLIENTE] jmalonso - REMOVIDO DE LA LISTA
+[06/05/2026 16:06:55] [CONEXION] Nuevo cliente desde IP: 192.168.194.174
+[06/05/2026 16:06:55] [CLIENTE] jmalonso (192.168.194.174) - CONECTADO
+[06/05/2026 16:09:22] [ERROR] Cliente jmalonso (192.168.194.174): Connection reset
+[06/05/2026 16:09:22] [CLIENTE] jmalonso - REMOVIDO DE LA LISTA
+[06/05/2026 16:09:26] [CONEXION] Nuevo cliente desde IP: 192.168.194.174
+[06/05/2026 16:09:26] [CLIENTE] jmalonso (192.168.194.174) - CONECTADO
+[06/05/2026 16:09:43] [LOG jmalonso] >>> RESOLVER "4*9985"
+[06/05/2026 16:09:46] [LOG jmalonso] >>> FECHA
+[06/05/2026 16:09:48] [LOG jmalonso] >>> LISTA
+[06/05/2026 16:09:49] [LOG jmalonso] >>> FECHA
+[06/05/2026 16:10:01] [ERROR] Cliente jmalonso (192.168.194.174): Connection reset
+[06/05/2026 16:10:01] [CLIENTE] jmalonso - REMOVIDO DE LA LISTA
+[06/05/2026 16:11:35] [CONEXION] Nuevo cliente desde IP: 192.168.194.174
+[06/05/2026 16:11:35] [CLIENTE] 654 (192.168.194.174) - CONECTADO
+[06/05/2026 16:11:55] [ERROR] Cliente 654 (192.168.194.174): Connection reset
+[06/05/2026 16:11:55] [CLIENTE] 654 - REMOVIDO DE LA LISTA
+[06/05/2026 16:12:01] [CONEXION] Nuevo cliente desde IP: 192.168.194.174
+[06/05/2026 16:12:01] [CLIENTE] asdf (192.168.194.174) - CONECTADO
+[06/05/2026 16:12:21] [CONEXION] Nuevo cliente desde IP: 192.168.194.174
+[06/05/2026 16:12:21] [CLIENTE] tgfrh (192.168.194.174) - CONECTADO
+[06/05/2026 16:12:29] [ERROR] Cliente tgfrh (192.168.194.174): Connection reset
+[06/05/2026 16:12:29] [CLIENTE] tgfrh - REMOVIDO DE LA LISTA
+[06/05/2026 16:13:37] [CONEXION] Nuevo cliente desde IP: 192.168.194.174
+[06/05/2026 16:13:37] [CLIENTE] dsc (192.168.194.174) - CONECTADO
+[06/05/2026 16:13:40] [CONEXION] Nuevo cliente desde IP: 192.168.194.209
+[06/05/2026 16:13:40] [CLIENTE] NicoB (192.168.194.209) - CONECTADO
+[06/05/2026 16:14:00] [LOG NicoB] >>> LISTA
+[06/05/2026 16:14:14] [LOG NicoB] >>> *ALL "hola, ahi me pude conectar"
+[06/05/2026 16:14:14] [MENSAJE] NicoB envio a TODOS: hola, ahi me pude conectar
+[06/05/2026 16:14:31] [LOG dsc] >>> *ALL "JAJAJja funciona tan bien la app que se me abrió solo el chat"
+[06/05/2026 16:14:31] [MENSAJE] dsc envio a TODOS: JAJAJja funciona tan bien la app que se me abrió solo el chat
+[06/05/2026 16:14:36] [ERROR] Cliente asdf (192.168.194.174): A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+[06/05/2026 16:14:36] [CLIENTE] asdf - REMOVIDO DE LA LISTA
+[06/05/2026 16:14:47] [LOG dsc] >>> LISTA
+[06/05/2026 16:14:53] [LOG NicoB] >>> *ALL "JAJSASJAJSDJASDJ"
+[06/05/2026 16:14:53] [MENSAJE] NicoB envio a TODOS: JAJSASJAJSDJASDJ
+[06/05/2026 16:14:57] [LOG dsc] >>> *NicoB "shalom"
+[06/05/2026 16:14:57] [MENSAJE] dsc -> NicoB: shalom
+[06/05/2026 16:15:05] [LOG NicoB] >>> *dsc "kaksdkasdka"
+[06/05/2026 16:15:05] [MENSAJE] NicoB -> dsc: kaksdkasdka
+[06/05/2026 16:15:21] [LOG NicoB] >>> *ALL "quedo bien"
+[06/05/2026 16:15:21] [MENSAJE] NicoB envio a TODOS: quedo bien
+[06/05/2026 16:15:27] [LOG NicoB] >>> PROVINCIAS
+[06/05/2026 16:15:37] [LOG NicoB] >>> FECHA
+[06/05/2026 16:15:49] [LOG NicoB] >>> LISTA
+[06/05/2026 16:16:05] [ERROR] Cliente NicoB (192.168.194.209): Connection reset
+[06/05/2026 16:16:05] [CLIENTE] NicoB - REMOVIDO DE LA LISTA
+[06/05/2026 16:16:30] [LOG dsc] >>> *ALL "Ni tan mal, le estoy haciendo unas cosas todavía"
+[06/05/2026 16:16:30] [MENSAJE] dsc envio a TODOS: Ni tan mal, le estoy haciendo unas cosas todavía
+[06/05/2026 16:16:39] [LOG dsc] >>> LISTA
+[06/05/2026 16:17:07] [ERROR] Cliente dsc (192.168.194.174): Connection reset
+[06/05/2026 16:17:07] [CLIENTE] dsc - REMOVIDO DE LA LISTA
+[06/05/2026 16:19:27] [CONEXION] Nuevo cliente desde IP: 192.168.194.174
+[06/05/2026 16:19:27] [CLIENTE] bhjg (192.168.194.174) - CONECTADO
+[06/05/2026 16:19:38] [ERROR] Cliente bhjg (192.168.194.174): Connection reset
+[06/05/2026 16:19:38] [CLIENTE] bhjg - REMOVIDO DE LA LISTA
+[06/05/2026 16:19:42] [CONEXION] Nuevo cliente desde IP: 192.168.194.174
+[06/05/2026 16:19:42] [CLIENTE] uhgi (192.168.194.174) - CONECTADO
+[06/05/2026 16:20:50] [ERROR] Cliente uhgi (192.168.194.174): Connection reset
+[06/05/2026 16:20:50] [CLIENTE] uhgi - REMOVIDO DE LA LISTA
+[06/05/2026 16:20:56] [CONEXION] Nuevo cliente desde IP: 192.168.194.174
+[06/05/2026 16:20:56] [CLIENTE] jmalonso (192.168.194.174) - CONECTADO
+[06/05/2026 16:21:17] [ERROR] Cliente jmalonso (192.168.194.174): Connection reset
+[06/05/2026 16:21:17] [CLIENTE] jmalonso - REMOVIDO DE LA LISTA
+[06/05/2026 16:21:22] [CONEXION] Nuevo cliente desde IP: 192.168.194.174
+[06/05/2026 16:21:22] [CLIENTE] jmalonso (192.168.194.174) - CONECTADO
+[06/05/2026 16:21:26] [ERROR] Cliente jmalonso (192.168.194.174): Connection reset
+[06/05/2026 16:21:26] [CLIENTE] jmalonso - REMOVIDO DE LA LISTA
+[06/05/2026 16:28:11] [CONEXION] Nuevo cliente desde IP: 192.168.194.174
+[06/05/2026 16:28:11] [CLIENTE] jmalonso (192.168.194.174) - CONECTADO
+[06/05/2026 16:28:27] [LOG jmalonso] >>> FECHA
+[06/05/2026 16:29:48] [ERROR] Cliente jmalonso (192.168.194.174): Connection reset
+[06/05/2026 16:29:48] [CLIENTE] jmalonso - REMOVIDO DE LA LISTA
+[06/05/2026 16:30:13] [CONEXION] Nuevo cliente desde IP: 192.168.194.174
+[06/05/2026 16:30:13] [CLIENTE] jj (192.168.194.174) - CONECTADO
+[06/05/2026 16:30:40] [LOG jj] >>> SALIR
+[06/05/2026 16:30:40] [CLIENTE] jj - DESCONECTADO
+[06/05/2026 16:30:40] [CLIENTE] jj - REMOVIDO DE LA LISTA
+[06/05/2026 16:33:26] [CONEXION] Nuevo cliente desde IP: 192.168.194.174
+[06/05/2026 16:33:26] [CLIENTE] JMALONS (192.168.194.174) - CONECTADO
+[06/05/2026 16:33:49] [LOG JMALONS] >>> FECHA
+[06/05/2026 16:34:59] [LOG JMALONS] >>> SALIR
+[06/05/2026 16:34:59] [CLIENTE] JMALONS - DESCONECTADO
+[06/05/2026 16:34:59] [CLIENTE] JMALONS - REMOVIDO DE LA LISTA
