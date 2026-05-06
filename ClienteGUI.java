@@ -7,6 +7,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 public class ClienteGUI extends JFrame {
   private static final String HOST = "192.168.194.119";
@@ -20,6 +21,9 @@ public class ClienteGUI extends JFrame {
   private JTextArea areaSalidaGeneral;
   private JLabel indicadorEstado;
   private Map<String, VentanaChat> chatsAbiertos = new HashMap<>();
+
+  // Modelo para la lista desplegable de usuarios
+  private DefaultComboBoxModel<String> modeloUsuarios = new DefaultComboBoxModel<>();
 
   public ClienteGUI() {
     solicitarNombre();
@@ -35,7 +39,6 @@ public class ClienteGUI extends JFrame {
   private void configurarVentanaPrincipal() {
     setTitle("Terminal de Comandos - " + nombreUsuario);
     setSize(750, 600);
-    // Cambiamos el comportamiento de la X para que use nuestro método de salida limpia
     setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
     addWindowListener(new java.awt.event.WindowAdapter() {
       @Override
@@ -46,14 +49,12 @@ public class ClienteGUI extends JFrame {
 
     setLayout(new BorderLayout());
 
-    // Panel Superior: Estado
     JPanel panelEstado = new JPanel(new FlowLayout(FlowLayout.LEFT));
     indicadorEstado = new JLabel("● Desconectado");
     indicadorEstado.setForeground(Color.RED);
     panelEstado.add(indicadorEstado);
     add(panelEstado, BorderLayout.NORTH);
 
-    // Centro: Salida de comandos
     areaSalidaGeneral = new JTextArea();
     areaSalidaGeneral.setEditable(false);
     areaSalidaGeneral.setBackground(new Color(240, 240, 240));
@@ -62,9 +63,7 @@ public class ClienteGUI extends JFrame {
 
     limpiarYMostrarMenu();
 
-    // Lateral: Menú de Botones (Derecha)
     JPanel panelMenu = new JPanel();
-    // Ajustamos a 11 filas para incluir separador y botón Salir
     panelMenu.setLayout(new GridLayout(11, 1, 5, 5));
     panelMenu.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
@@ -77,7 +76,6 @@ public class ClienteGUI extends JFrame {
     JButton btnGlobal = new JButton("Chat Global");
     JButton btnSalir = new JButton("Salir");
 
-    // Estilo especial para el botón de salir
     btnSalir.setBackground(new Color(255, 204, 204));
 
     btnFecha.addActionListener(e -> enviar("FECHA"));
@@ -85,12 +83,29 @@ public class ClienteGUI extends JFrame {
     btnProvincias.addActionListener(e -> enviar("PROVINCIAS"));
     btnResolver.addActionListener(e -> abrirVentanaOperacion("RESOLVER"));
     btnContar.addActionListener(e -> abrirVentanaOperacion("CONTAR"));
+
+    // --- NUEVA LÓGICA DE CHAT PRIVADO CON LISTA DESPLEGABLE ---
     btnPrivado.addActionListener(e -> {
-      String destino = JOptionPane.showInputDialog("¿Con quién quieres hablar?");
-      if (destino != null && !destino.trim().isEmpty()) {
-        obtenerVentanaChat(destino).setVisible(true);
+      // Primero solicitamos la lista actualizada al servidor
+      enviar("LISTA");
+
+      // Pequeña validación por si la lista está vacía (solo tú conectado)
+      if (modeloUsuarios.getSize() == 0) {
+        JOptionPane.showMessageDialog(this, "No hay otros usuarios conectados actualmente.", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+        return;
+      }
+
+      JComboBox<String> comboUsuarios = new JComboBox<>(modeloUsuarios);
+      int seleccion = JOptionPane.showConfirmDialog(this, comboUsuarios, "Selecciona el usuario para chatear:", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+      if (seleccion == JOptionPane.OK_OPTION) {
+        String destino = (String) comboUsuarios.getSelectedItem();
+        if (destino != null) {
+          obtenerVentanaChat(destino).setVisible(true);
+        }
       }
     });
+
     btnGlobal.addActionListener(e -> obtenerVentanaChat("TODOS").setVisible(true));
     btnSalir.addActionListener(e -> salirDelSistema());
 
@@ -108,7 +123,6 @@ public class ClienteGUI extends JFrame {
 
     add(panelMenu, BorderLayout.EAST);
 
-    // Panel Inferior: Botón Limpiar
     JPanel panelInferior = new JPanel(new FlowLayout(FlowLayout.CENTER));
     JButton btnLimpiar = new JButton("Limpiar Pantalla");
     btnLimpiar.setPreferredSize(new Dimension(150, 30));
@@ -123,8 +137,8 @@ public class ClienteGUI extends JFrame {
         JOptionPane.YES_NO_OPTION);
 
     if (confirmar == JOptionPane.YES_OPTION) {
-      enviar("SALIR"); // Avisa al servidor
-      System.exit(0);  // Cierra la aplicación
+      enviar("SALIR");
+      System.exit(0);
     }
   }
 
@@ -179,11 +193,26 @@ public class ClienteGUI extends JFrame {
   }
 
   private void procesarMensajeServidor(String msj) {
-    if (msj.contains(" -> TODOS]")) {
-      obtenerVentanaChat("TODOS").recibir(msj);
-    } else if (msj.contains(" -> " + nombreUsuario + "]")) {
+    // Analizar la respuesta de LISTA del servidor para llenar el ComboBox
+    if (msj.contains("Clientes conectados (")) {
+      modeloUsuarios.removeAllElements();
+    } else if (msj.matches("^\\s+\\d+\\.\\s+.+\\s+\\(IP:.*\\)")) {
+      // Extraemos el nombre: está entre el ". " y el " (IP:"
+      String nombre = msj.substring(msj.indexOf(". ") + 2, msj.indexOf(" (IP:")).trim();
+      if (!nombre.equals(nombreUsuario)) {
+        modeloUsuarios.addElement(nombre);
+      }
+    }
+
+    if (msj.startsWith("[") && msj.contains(" -> ")) {
       String remitente = msj.substring(1, msj.indexOf(" -> "));
-      obtenerVentanaChat(remitente).recibir(msj);
+      String resto = msj.substring(msj.indexOf("]") + 1).trim();
+
+      if (msj.contains(" -> TODOS]")) {
+        obtenerVentanaChat("TODOS").recibir(remitente, resto);
+      } else if (msj.contains(" -> " + nombreUsuario + "]")) {
+        obtenerVentanaChat(remitente).recibir(remitente, resto);
+      }
     } else if (msj.startsWith("Resultado de") || msj.startsWith("Texto: \"")) {
       JOptionPane.showMessageDialog(this, msj, "Resultado de Operación", JOptionPane.INFORMATION_MESSAGE);
     } else if (
@@ -213,21 +242,22 @@ public class ClienteGUI extends JFrame {
     return chatsAbiertos.computeIfAbsent(id, k -> new VentanaChat(id));
   }
 
-  // --- INTERFAZ DE CHAT MEJORADA TIPO WHATSAPP ---
   private class VentanaChat extends JFrame {
-    private JTextPane area; // Se reemplaza JTextArea por JTextPane
+    private JTextPane area;
     private JTextField input;
     private String destino;
+    private Map<String, Color> coloresUsuarios = new HashMap<>();
+    private Random random = new Random();
 
     public VentanaChat(String destino) {
       this.destino = destino;
       setTitle(destino.equals("TODOS") ? "Chat Global" : "Chat con " + destino);
-      setSize(400, 450); // Ligeramente más grande para mayor comodidad
+      setSize(400, 450);
       setLayout(new BorderLayout());
 
       area = new JTextPane();
       area.setEditable(false);
-      area.setBackground(new Color(230, 230, 230)); // Fondo estilo app de mensajería
+      area.setBackground(new Color(235, 235, 235));
       add(new JScrollPane(area), BorderLayout.CENTER);
 
       input = new JTextField();
@@ -237,8 +267,7 @@ public class ClienteGUI extends JFrame {
         if (!msj.isEmpty()) {
           String cmd = destino.equals("TODOS") ? "*ALL \"" + msj + "\"" : "*" + destino + " \"" + msj + "\"";
           enviar(cmd);
-          // Como este mensaje lo mandas tú, lo alineamos a la derecha
-          agregarMensaje("[Tú] " + msj, true);
+          agregarMensaje("Tú", msj, true);
           input.setText("");
         }
       });
@@ -249,40 +278,47 @@ public class ClienteGUI extends JFrame {
       add(panelSur, BorderLayout.SOUTH);
     }
 
-    public void recibir(String msj) {
-      // Como este mensaje llega desde el servidor, lo alineamos a la izquierda
-      agregarMensaje(msj, false);
+    public void recibir(String remitente, String cuerpo) {
+      agregarMensaje(remitente, cuerpo, false);
       if (!isVisible()) setVisible(true);
     }
 
-    // Método que gestiona la magia de los colores y la alineación
-    private void agregarMensaje(String texto, boolean enviadoPorMi) {
+    private void agregarMensaje(String remitente, String cuerpo, boolean enviadoPorMi) {
       StyledDocument doc = area.getStyledDocument();
 
-      // Atributos de alineación (Derecha o Izquierda)
       SimpleAttributeSet alineacion = new SimpleAttributeSet();
       StyleConstants.setAlignment(alineacion, enviadoPorMi ? StyleConstants.ALIGN_RIGHT : StyleConstants.ALIGN_LEFT);
 
-      // Atributos de fuente y color
-      SimpleAttributeSet fuente = new SimpleAttributeSet();
-      StyleConstants.setFontFamily(fuente, "SansSerif");
-      StyleConstants.setFontSize(fuente, 13);
+      SimpleAttributeSet estiloNombre = new SimpleAttributeSet();
+      StyleConstants.setBold(estiloNombre, true);
+
       if (enviadoPorMi) {
-        StyleConstants.setForeground(fuente, new Color(0, 100, 0)); // Verde oscuro para mensajes propios
-        StyleConstants.setBold(fuente, true);
+        StyleConstants.setForeground(estiloNombre, new Color(0, 128, 0));
+      } else if (destino.equals("TODOS")) {
+        StyleConstants.setForeground(estiloNombre, obtenerColorUsuario(remitente));
       } else {
-        StyleConstants.setForeground(fuente, Color.BLACK); // Negro para mensajes recibidos
-        StyleConstants.setBold(fuente, false);
+        StyleConstants.setForeground(estiloNombre, Color.BLUE);
       }
 
+      SimpleAttributeSet estiloCuerpo = new SimpleAttributeSet();
+      StyleConstants.setForeground(estiloCuerpo, Color.BLACK);
+      StyleConstants.setBold(estiloCuerpo, false);
+
       try {
-        int length = doc.getLength();
-        doc.insertString(length, texto + "\n\n", fuente); // Inserta texto
-        doc.setParagraphAttributes(length, texto.length() + 2, alineacion, false); // Aplica alineación
-        area.setCaretPosition(doc.getLength()); // Auto-scroll
-      } catch (Exception ex) {
-        ex.printStackTrace();
+        int lengthBefore = doc.getLength();
+        doc.insertString(doc.getLength(), "[" + remitente + "]: ", estiloNombre);
+        doc.insertString(doc.getLength(), cuerpo + "\n\n", estiloCuerpo);
+        doc.setParagraphAttributes(lengthBefore, doc.getLength() - lengthBefore, alineacion, false);
+        area.setCaretPosition(doc.getLength());
+      } catch (BadLocationException e) {
+        e.printStackTrace();
       }
+    }
+
+    private Color obtenerColorUsuario(String usuario) {
+      return coloresUsuarios.computeIfAbsent(usuario, k -> {
+        return new Color(random.nextInt(180), random.nextInt(180), random.nextInt(180));
+      });
     }
   }
 

@@ -339,3 +339,108 @@
 [06/05/2026 17:10:11]       usando la direccion IP virtual asignada por ZeroTier
 [06/05/2026 17:10:11] Hora inicio: 06/05/2026 17:10:11
 [06/05/2026 17:10:11] 
+[06/05/2026 17:16:43] [CONEXION] Nuevo cliente desde IP: 192.168.194.174
+[06/05/2026 17:16:43] [CLIENTE] Juanma (192.168.194.174) - CONECTADO
+[06/05/2026 17:17:13] [LOG Juanma] >>> *ALL "Hola"
+[06/05/2026 17:17:13] [MENSAJE] Juanma envio a TODOS: Hola
+[06/05/2026 17:18:22] [CONEXION] Nuevo cliente desde IP: 192.168.194.119
+[06/05/2026 17:18:22] [CLIENTE] NicoB (192.168.194.119) - CONECTADO
+[06/05/2026 17:25:25] [CONEXION] Nuevo cliente desde IP: 192.168.194.155
+[06/05/2026 17:25:25] [CLIENTE] NegroHM (192.168.194.155) - CONECTADO
+[06/05/2026 17:25:33] [LOG Juanma] >>> *ALL "Hola"
+[06/05/2026 17:25:33] [MENSAJE] Juanma envio a TODOS: Hola
+[06/05/2026 17:25:39] [LOG NegroHM] >>> *ALL "Hola"
+[06/05/2026 17:25:39] [MENSAJE] NegroHM envio a TODOS: Hola
+[06/05/2026 17:25:48] [LOG NicoB] >>> *ALL "Hola"
+[06/05/2026 17:25:48] [MENSAJE] NicoB envio a TODOS: Hola
+[06/05/2026 17:26:30] [LOG Juanma] >>> *NicoB "Hola"
+[06/05/2026 17:26:30] [MENSAJE] Juanma -> NicoB: Hola
+[06/05/2026 17:26:52] [LOG NicoB] >>> *juanma "Hola"
+[06/05/2026 17:26:52] [MENSAJE_ERROR] NicoB intento enviar a juanma (no existe)
+[06/05/2026 17:27:10] [LOG NicoB] >>> *Juanma "Hola"
+[06/05/2026 17:27:10] [MENSAJE] NicoB -> Juanma: Hola
+[06/05/2026 17:27:44] [LOG NegroHM] >>> SALIR
+[06/05/2026 17:27:44] [CLIENTE] NegroHM - DESCONECTADO
+[06/05/2026 17:27:44] [CLIENTE] NegroHM - REMOVIDO DE LA LISTA
+[06/05/2026 17:28:59] [LOG Juanma] >>> SALIR
+[06/05/2026 17:28:59] [CLIENTE] Juanma - DESCONECTADO
+[06/05/2026 17:28:59] [CLIENTE] Juanma - REMOVIDO DE LA LISTA
+[06/05/2026 17:29:18] [LOG NicoB] >>> SALIR
+[06/05/2026 17:29:18] [CLIENTE] NicoB - DESCONECTADO
+[06/05/2026 17:29:18] [CLIENTE] NicoB - REMOVIDO DE LA LISTA
+[06/05/2026 17:42:42] ============================================
+[06/05/2026 17:42:42]   SERVIDOR INICIADO EN EL PUERTO 6789
+[06/05/2026 17:42:42] ============================================
+[06/05/2026 17:42:42] Esperando conexiones de clientes...
+[06/05/2026 17:42:42] Nota: Puedes conectar clientes desde otras maquinas via ZeroTier
+[06/05/2026 17:42:42]       usando la direccion IP virtual asignada por ZeroTier
+[06/05/2026 17:42:42] Hora inicio: 06/05/2026 17:42:42
+[06/05/2026 17:42:42] 
+[06/05/2026 17:44:11] [CONEXION] Nuevo cliente desde IP: 192.168.194.119
+[06/05/2026 17:44:11] [CLIENTE] Jmalonso (192.168.194.119) - CONECTADO
+[06/05/2026 17:44:14] [LOG Jmalonso] >>> LISTA
+[06/05/2026 17:45:51] [CONEXION] Nuevo cliente desde IP: 192.168.194.174
+[06/05/2026 17:45:51] [CLIENTE] jm2 (192.168.194.174) - CONECTADO
+[06/05/2026 17:45:53] [LOG jm2] >>> LISTA
+[06/05/2026 17:45:56] [LOG jm2] >>> LISTA
+[06/05/2026 17:46:01] [LOG jm2] >>> LISTA
+[06/05/2026 17:46:05] [LOG jm2] >>> *Jmalonso "Hola pa"
+[06/05/2026 17:46:05] [MENSAJE] jm2 -> Jmalonso: Hola pa
+[06/05/2026 17:46:12] [LOG Jmalonso] >>> *jm2 "Saa"
+[06/05/2026 17:46:12] [MENSAJE] Jmalonso -> jm2: Saa
+[06/05/2026 17:46:22] [LOG jm2] >>> SALIR
+[06/05/2026 17:46:22] [CLIENTE] jm2 - DESCONECTADO
+[06/05/2026 17:46:22] [CLIENTE] jm2 - REMOVIDO DE LA LISTA
+[06/05/2026 17:46:32] [LOG Jmalonso] >>> SALIR
+[06/05/2026 17:46:32] [CLIENTE] Jmalonso - DESCONECTADO
+[06/05/2026 17:46:32] [CLIENTE] Jmalonso - REMOVIDO DE LA LISTA
+[06/05/2026 18:14:10] ============================================
+[06/05/2026 18:14:10]   SERVIDOR INICIADO EN EL PUERTO 6789
+[06/05/2026 18:14:10] ============================================
+[06/05/2026 18:14:10] Esperando conexiones de clientes...
+[06/05/2026 18:14:10] Nota: Puedes conectar clientes desde otras maquinas via ZeroTier
+[06/05/2026 18:14:10]       usando la direccion IP virtual asignada por ZeroTier
+[06/05/2026 18:14:10] Hora inicio: 06/05/2026 18:14:10
+[06/05/2026 18:14:10] 
+[06/05/2026 18:15:22] ============================================
+[06/05/2026 18:15:22]   SERVIDOR INICIADO EN EL PUERTO 6789
+[06/05/2026 18:15:22] ============================================
+[06/05/2026 18:15:22] Esperando conexiones de clientes...
+[06/05/2026 18:15:22] Nota: Puedes conectar clientes desde otras maquinas via ZeroTier
+[06/05/2026 18:15:22]       usando la direccion IP virtual asignada por ZeroTier
+[06/05/2026 18:15:22] Hora inicio: 06/05/2026 18:15:22
+[06/05/2026 18:15:22] 
+[06/05/2026 18:15:40] ============================================
+[06/05/2026 18:15:40]   SERVIDOR INICIADO EN EL PUERTO 6789
+[06/05/2026 18:15:40] ============================================
+[06/05/2026 18:15:40] Esperando conexiones de clientes...
+[06/05/2026 18:15:40] Nota: Puedes conectar clientes desde otras maquinas via ZeroTier
+[06/05/2026 18:15:40]       usando la direccion IP virtual asignada por ZeroTier
+[06/05/2026 18:15:40] Hora inicio: 06/05/2026 18:15:40
+[06/05/2026 18:15:40] 
+[06/05/2026 18:15:51] [CONEXION] Nuevo cliente desde IP: 192.168.194.174
+[06/05/2026 18:15:51] [CLIENTE] jmalonso (192.168.194.174) - CONECTADO
+[06/05/2026 18:16:05] [CONEXION] Nuevo cliente desde IP: 192.168.194.119
+[06/05/2026 18:16:05] [CLIENTE] fernando (192.168.194.119) - CONECTADO
+[06/05/2026 18:16:07] [LOG fernando] >>> LISTA
+[06/05/2026 18:16:13] [LOG fernando] >>> SALIR
+[06/05/2026 18:16:13] [CLIENTE] fernando - DESCONECTADO
+[06/05/2026 18:16:13] [CLIENTE] fernando - REMOVIDO DE LA LISTA
+[06/05/2026 18:16:24] [CONEXION] Nuevo cliente desde IP: 192.168.194.119
+[06/05/2026 18:16:24] [CLIENTE] fernando (192.168.194.119) - CONECTADO
+[06/05/2026 18:16:34] [LOG fernando] >>> FECHA
+[06/05/2026 18:16:35] [LOG fernando] >>> LISTA
+[06/05/2026 18:16:48] [LOG fernando] >>> SALIR
+[06/05/2026 18:16:48] [CLIENTE] fernando - DESCONECTADO
+[06/05/2026 18:16:48] [CLIENTE] fernando - REMOVIDO DE LA LISTA
+[06/05/2026 18:16:57] [CONEXION] Nuevo cliente desde IP: 192.168.194.119
+[06/05/2026 18:16:57] [CLIENTE] Fernando (192.168.194.119) - CONECTADO
+[06/05/2026 18:17:00] [LOG Fernando] >>> LISTA
+[06/05/2026 18:17:01] [LOG Fernando] >>> LISTA
+[06/05/2026 18:17:05] [LOG Fernando] >>> LISTA
+[06/05/2026 18:17:17] [LOG Fernando] >>> SALIR
+[06/05/2026 18:17:17] [CLIENTE] Fernando - DESCONECTADO
+[06/05/2026 18:17:17] [CLIENTE] Fernando - REMOVIDO DE LA LISTA
+[06/05/2026 18:17:27] [LOG jmalonso] >>> SALIR
+[06/05/2026 18:17:27] [CLIENTE] jmalonso - DESCONECTADO
+[06/05/2026 18:17:27] [CLIENTE] jmalonso - REMOVIDO DE LA LISTA
