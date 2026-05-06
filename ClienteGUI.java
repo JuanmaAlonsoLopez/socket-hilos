@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Random;
 
 public class ClienteGUI extends JFrame {
-  private static final String HOST = "192.168.194.119";
+  private static final String HOST = "192.168.194.119"; // Tu IP de red o ZeroTier
   private static final int PUERTO = 6789;
 
   private Socket socket;
@@ -21,9 +21,12 @@ public class ClienteGUI extends JFrame {
   private JTextArea areaSalidaGeneral;
   private JLabel indicadorEstado;
   private Map<String, VentanaChat> chatsAbiertos = new HashMap<>();
-
-  // Modelo para la lista desplegable de usuarios
   private DefaultComboBoxModel<String> modeloUsuarios = new DefaultComboBoxModel<>();
+
+  // --- NUEVAS VARIABLES PARA CONTROL DE LISTA ---
+  private boolean peticionListaParaChat = false;
+  private int totalUsuariosEsperados = 0;
+  private int usuariosRecibidos = 0;
 
   public ClienteGUI() {
     solicitarNombre();
@@ -78,46 +81,33 @@ public class ClienteGUI extends JFrame {
 
     btnSalir.setBackground(new Color(255, 204, 204));
 
+    // ACCIONES DE BOTONES
     btnFecha.addActionListener(e -> enviar("FECHA"));
-    btnLista.addActionListener(e -> enviar("LISTA"));
+
+    btnLista.addActionListener(e -> {
+      peticionListaParaChat = false; // Queremos que se vea en el área general
+      enviar("LISTA");
+    });
+
     btnProvincias.addActionListener(e -> enviar("PROVINCIAS"));
     btnResolver.addActionListener(e -> abrirVentanaOperacion("RESOLVER"));
     btnContar.addActionListener(e -> abrirVentanaOperacion("CONTAR"));
 
-    // --- NUEVA LÓGICA DE CHAT PRIVADO CON LISTA DESPLEGABLE ---
     btnPrivado.addActionListener(e -> {
-      // Primero solicitamos la lista actualizada al servidor
+      peticionListaParaChat = true; // No queremos que se vea en el área general
       enviar("LISTA");
-
-      // Pequeña validación por si la lista está vacía (solo tú conectado)
-      if (modeloUsuarios.getSize() == 0) {
-        JOptionPane.showMessageDialog(this, "No hay otros usuarios conectados actualmente.", "Aviso", JOptionPane.INFORMATION_MESSAGE);
-        return;
-      }
-
-      JComboBox<String> comboUsuarios = new JComboBox<>(modeloUsuarios);
-      int seleccion = JOptionPane.showConfirmDialog(this, comboUsuarios, "Selecciona el usuario para chatear:", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
-
-      if (seleccion == JOptionPane.OK_OPTION) {
-        String destino = (String) comboUsuarios.getSelectedItem();
-        if (destino != null) {
-          obtenerVentanaChat(destino).setVisible(true);
-        }
-      }
+      // El diálogo se abrirá solo en procesarMensajeServidor cuando lleguen los datos
     });
 
     btnGlobal.addActionListener(e -> obtenerVentanaChat("TODOS").setVisible(true));
     btnSalir.addActionListener(e -> salirDelSistema());
 
-    panelMenu.add(btnFecha);
-    panelMenu.add(btnLista);
-    panelMenu.add(btnProvincias);
+    // Agregar componentes al panel lateral
+    panelMenu.add(btnFecha); panelMenu.add(btnLista); panelMenu.add(btnProvincias);
     panelMenu.add(new JSeparator());
-    panelMenu.add(btnResolver);
-    panelMenu.add(btnContar);
+    panelMenu.add(btnResolver); panelMenu.add(btnContar);
     panelMenu.add(new JSeparator());
-    panelMenu.add(btnPrivado);
-    panelMenu.add(btnGlobal);
+    panelMenu.add(btnPrivado); panelMenu.add(btnGlobal);
     panelMenu.add(new JSeparator());
     panelMenu.add(btnSalir);
 
@@ -132,10 +122,7 @@ public class ClienteGUI extends JFrame {
   }
 
   private void salirDelSistema() {
-    int confirmar = JOptionPane.showConfirmDialog(this,
-        "¿Estás seguro de que deseas salir?", "Confirmar Salida",
-        JOptionPane.YES_NO_OPTION);
-
+    int confirmar = JOptionPane.showConfirmDialog(this, "¿Estás seguro de que deseas salir?", "Confirmar Salida", JOptionPane.YES_NO_OPTION);
     if (confirmar == JOptionPane.YES_OPTION) {
       enviar("SALIR");
       System.exit(0);
@@ -165,12 +152,9 @@ public class ClienteGUI extends JFrame {
       socket = new Socket(HOST, PUERTO);
       salida = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), charset), true);
       entrada = new BufferedReader(new InputStreamReader(socket.getInputStream(), charset));
-
       salida.println("NOMBRE " + nombreUsuario);
-
       indicadorEstado.setText("● Conectado a " + HOST);
       indicadorEstado.setForeground(new Color(0, 150, 0));
-
       new Thread(this::escucharServidor).start();
     } catch (IOException e) {
       areaSalidaGeneral.append("[ERROR] No se pudo conectar: " + e.getMessage() + "\n");
@@ -193,17 +177,46 @@ public class ClienteGUI extends JFrame {
   }
 
   private void procesarMensajeServidor(String msj) {
-    // Analizar la respuesta de LISTA del servidor para llenar el ComboBox
+    // 1. DETECTAR EL ENCABEZADO DE LA LISTA
     if (msj.contains("Clientes conectados (")) {
-      modeloUsuarios.removeAllElements();
-    } else if (msj.matches("^\\s+\\d+\\.\\s+.+\\s+\\(IP:.*\\)")) {
-      // Extraemos el nombre: está entre el ". " y el " (IP:"
+      try {
+        // Extraemos el total de usuarios que el servidor enviará
+        String num = msj.substring(msj.indexOf("(") + 1, msj.indexOf(" total)"));
+        totalUsuariosEsperados = Integer.parseInt(num);
+        usuariosRecibidos = 0;
+        modeloUsuarios.removeAllElements();
+
+        // Si solo estás tú y es para chat, avisamos de una vez
+        if (totalUsuariosEsperados == 1 && peticionListaParaChat) {
+          JOptionPane.showMessageDialog(this, "No hay otros usuarios conectados actualmente.", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+          peticionListaParaChat = false;
+          return;
+        }
+      } catch (Exception e) { totalUsuariosEsperados = 0; }
+
+      if (!peticionListaParaChat) areaSalidaGeneral.append(msj + "\n");
+      return;
+    }
+
+    // 2. DETECTAR CADA LÍNEA DE USUARIO
+    if (msj.matches("^\\s+\\d+\\.\\s+.+\\s+\\(IP:.*\\)")) {
+      usuariosRecibidos++;
       String nombre = msj.substring(msj.indexOf(". ") + 2, msj.indexOf(" (IP:")).trim();
       if (!nombre.equals(nombreUsuario)) {
         modeloUsuarios.addElement(nombre);
       }
+
+      if (!peticionListaParaChat) areaSalidaGeneral.append(msj + "\n");
+
+      // Si terminamos de recibir todos los usuarios y era para el chat privado, abrimos el diálogo
+      if (usuariosRecibidos == totalUsuariosEsperados && peticionListaParaChat) {
+        abrirDialogoChatPrivado();
+        peticionListaParaChat = false;
+      }
+      return;
     }
 
+    // 3. PROCESAR MENSAJES DE CHAT
     if (msj.startsWith("[") && msj.contains(" -> ")) {
       String remitente = msj.substring(1, msj.indexOf(" -> "));
       String resto = msj.substring(msj.indexOf("]") + 1).trim();
@@ -213,17 +226,29 @@ public class ClienteGUI extends JFrame {
       } else if (msj.contains(" -> " + nombreUsuario + "]")) {
         obtenerVentanaChat(remitente).recibir(remitente, resto);
       }
-    } else if (msj.startsWith("Resultado de") || msj.startsWith("Texto: \"")) {
+    }
+    // 4. OTROS COMANDOS Y RESULTADOS
+    else if (msj.startsWith("Resultado de") || msj.startsWith("Texto: \"")) {
       JOptionPane.showMessageDialog(this, msj, "Resultado de Operación", JOptionPane.INFORMATION_MESSAGE);
     } else if (
-        !msj.startsWith("---") &&
-            !msj.contains("Bienvenido") &&
-            !msj.contains("Tu usuario:") &&
-            !msj.contains("============================================") &&
-            !msj.contains(" - ")
+        !msj.startsWith("---") && !msj.contains("Bienvenido") && !msj.contains("Tu usuario:") &&
+            !msj.contains("============================================") && !msj.contains(" - ")
     ) {
       areaSalidaGeneral.append(msj + "\n");
       areaSalidaGeneral.setCaretPosition(areaSalidaGeneral.getDocument().getLength());
+    }
+  }
+
+  private void abrirDialogoChatPrivado() {
+    if (modeloUsuarios.getSize() == 0) {
+      JOptionPane.showMessageDialog(this, "No hay otros usuarios conectados actualmente.", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+    } else {
+      JComboBox<String> comboUsuarios = new JComboBox<>(modeloUsuarios);
+      int seleccion = JOptionPane.showConfirmDialog(this, comboUsuarios, "Selecciona el usuario para chatear:", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+      if (seleccion == JOptionPane.OK_OPTION) {
+        String destino = (String) comboUsuarios.getSelectedItem();
+        if (destino != null) obtenerVentanaChat(destino).setVisible(true);
+      }
     }
   }
 
@@ -242,6 +267,7 @@ public class ClienteGUI extends JFrame {
     return chatsAbiertos.computeIfAbsent(id, k -> new VentanaChat(id));
   }
 
+  // --- CLASE VENTANA CHAT (Se mantiene igual con tu lógica de colores) ---
   private class VentanaChat extends JFrame {
     private JTextPane area;
     private JTextField input;
@@ -254,12 +280,10 @@ public class ClienteGUI extends JFrame {
       setTitle(destino.equals("TODOS") ? "Chat Global" : "Chat con " + destino);
       setSize(400, 450);
       setLayout(new BorderLayout());
-
       area = new JTextPane();
       area.setEditable(false);
       area.setBackground(new Color(235, 235, 235));
       add(new JScrollPane(area), BorderLayout.CENTER);
-
       input = new JTextField();
       input.setFont(new Font("SansSerif", Font.PLAIN, 14));
       input.addActionListener(e -> {
@@ -271,7 +295,6 @@ public class ClienteGUI extends JFrame {
           input.setText("");
         }
       });
-
       JPanel panelSur = new JPanel(new BorderLayout());
       panelSur.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
       panelSur.add(input, BorderLayout.CENTER);
@@ -285,40 +308,27 @@ public class ClienteGUI extends JFrame {
 
     private void agregarMensaje(String remitente, String cuerpo, boolean enviadoPorMi) {
       StyledDocument doc = area.getStyledDocument();
-
       SimpleAttributeSet alineacion = new SimpleAttributeSet();
       StyleConstants.setAlignment(alineacion, enviadoPorMi ? StyleConstants.ALIGN_RIGHT : StyleConstants.ALIGN_LEFT);
-
       SimpleAttributeSet estiloNombre = new SimpleAttributeSet();
       StyleConstants.setBold(estiloNombre, true);
-
-      if (enviadoPorMi) {
-        StyleConstants.setForeground(estiloNombre, new Color(0, 128, 0));
-      } else if (destino.equals("TODOS")) {
-        StyleConstants.setForeground(estiloNombre, obtenerColorUsuario(remitente));
-      } else {
-        StyleConstants.setForeground(estiloNombre, Color.BLUE);
-      }
-
+      if (enviadoPorMi) StyleConstants.setForeground(estiloNombre, new Color(0, 128, 0));
+      else if (destino.equals("TODOS")) StyleConstants.setForeground(estiloNombre, obtenerColorUsuario(remitente));
+      else StyleConstants.setForeground(estiloNombre, Color.BLUE);
       SimpleAttributeSet estiloCuerpo = new SimpleAttributeSet();
       StyleConstants.setForeground(estiloCuerpo, Color.BLACK);
       StyleConstants.setBold(estiloCuerpo, false);
-
       try {
         int lengthBefore = doc.getLength();
         doc.insertString(doc.getLength(), "[" + remitente + "]: ", estiloNombre);
         doc.insertString(doc.getLength(), cuerpo + "\n\n", estiloCuerpo);
         doc.setParagraphAttributes(lengthBefore, doc.getLength() - lengthBefore, alineacion, false);
         area.setCaretPosition(doc.getLength());
-      } catch (BadLocationException e) {
-        e.printStackTrace();
-      }
+      } catch (BadLocationException e) { e.printStackTrace(); }
     }
 
     private Color obtenerColorUsuario(String usuario) {
-      return coloresUsuarios.computeIfAbsent(usuario, k -> {
-        return new Color(random.nextInt(180), random.nextInt(180), random.nextInt(180));
-      });
+      return coloresUsuarios.computeIfAbsent(usuario, k -> new Color(random.nextInt(180), random.nextInt(180), random.nextInt(180)));
     }
   }
 
